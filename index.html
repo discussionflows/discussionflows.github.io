@@ -1,8 +1,318 @@
 <html>
-    <head>
-        <meta http-equiv="refresh" content="0; URL=https://visualization-92663.wl.r.appspot.com/discussionflows.html" />
-    </head>
-    <body>
-        <p>Taking you to the interactive Discussion Flows prototype...</p>
-    </body>
+
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            padding: 0;
+            margin: 0;
+        }
+
+        img {
+            width: 100%;
+            margin: 20px 0;
+            border: solid 1px #ccc;
+        }
+
+        img.size_m{
+            width: 80%;
+            margin-left: 10%;
+        }
+
+        main {
+            width: 50%;
+            min-width: 500px;
+            margin: auto;
+            font-size: 18px;
+            color: #333;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        header {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        footer{
+            text-align: center;
+            margin: 100px auto;
+        }
+
+        hr {
+            width: 80%;
+            margin: 50px auto;
+        }
+
+        .banner {
+            width: 100%;
+            text-align: center;
+            height: 20px;
+            padding: 20px 0;
+            background-color: lemonchiffon;
+        }
+
+        .quote {
+            font-size: 2em;
+            font-weight: bold;
+            padding: 20px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            text-align: center;
+            color: salmon;
+        }
+
+        .caption {
+            font-size: 0.8em;
+            font-style: italic;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <p class="banner">Our short paper reporting Discussion Flows has been accepted to <a target="_blank"
+            href="https://www.eurovis.org/">EuroVis 2021</a>!</p>
+
+    <main>
+        <header>
+            <h1>Discussion Flows</h1>
+            <h3>An Interactive Visualization for Analyzing Engagement in Multi-Party Meetings</h3>
+        </header>
+        <img src="image/flow_full.png">
+        <p>
+            Engagement in multi-party meetings is a key indicator of outcome. Poor attendee involvement can hinder
+            progress and hurt team cohesion. With a better understanding of what happens in meetings, organizations
+            could address potential issues and improve the overall experience. Thanks to the popularity of online
+            meeting systems, whose usage has become widespread due to the COVID-19 pandemic, recording meetings is as
+            easy as clicking on a button. However, unpacking interactions and surfacing insights remain a challenge.
+        </p>
+        <p>
+            Conversation is inherently a social process. The words exchanged in a discussion are only part of the story.
+            Standard audio or video players offer little beyond basic replay controls. The advancement of AI
+            technologies, such as Natural Language Processing, can help transcribe and summarize the textual content,
+            but they are less effective in recognizing the intricate social undertone embedded in meetings. In
+            multi-party discussions, which are common in meetings, the group dynamic may easily change to respond to
+            different attendee composition and behaviors. In order to fully understand the engagement in a meeting, it
+            is necessary for users to utilize tools that bring their attention to social cues that might be easy to
+            miss, such as awkward silence or turn-taking behaviors.
+        </p>
+        <p class="quote">
+            The words exchanged in a discussion are only part of the story.
+        </p>
+        <p>
+            This motivated us to design Discussion Flows, a multi-level interactive visualization tool, that could help
+            analyze engagement in multi-party meetings.
+            We followed a user-centered process to gather requirements from target users and inform the design.
+            To demonstrate the solution, we created an interactive protype using the open-source <a
+                href="https://groups.inf.ed.ac.uk/ami/icsi/" target="_blank">ICSI’s Meeting Recorder Dialog Act (MRDA)
+                Corpus</a>. We are in the process of planning user studies to perform a robust, comprehensive evaluation
+            of the system. We hope the feedback would help us refine the design and pave the way for Discussion Flows to
+            be used in every meeting room.
+        </p>
+        <p>
+            You will find more information on how to use Discussion Flows below. You can also <a target="_blank"
+                href="https://visualization-92663.wl.r.appspot.com/discussionflows.html" target="_blank">try the
+                interactive Discussion Flows prototype</a> at any time.
+        </p>
+        <hr>
+
+        <h3>The Dataset</h3>
+        <p>
+            We demonstrate our prototype using <a href="https://groups.inf.ed.ac.uk/ami/icsi/" target="_blank">ICSI’s
+                Meeting
+                Recorder Dialog Act (MRDA) Corpus</a>. It was collected
+            at the International Computer Science Institute in Berkeley in early
+            2000’s. It consists of 75 work meetings on several projects. Most
+            run just under an hour and involve at least six speakers. The dataset
+            is released with rich annotations, including word-level orthographic
+            transcriptions, topic assignments, and detailed speaker information.
+        </p>
+
+        <h3>Requirments and Design</h3>
+        <p>
+            We started with a user-centered design process [AMKP04] to ensure
+            that our design goals were grounded on realistic use cases.
+            We conducted ten semi-structured interviews with participants recruited
+            from our industry partner SAP, a large enterprise software
+            company. The participants are from a wide range of roles and they
+            attend group meetings frequently. Interviews lasted between 15 to
+            30 minutes. The participants were asked to discuss around two
+            probing questions: (1) what would they want to know if they miss a
+            team meeting? (2) what would they want to share about a meeting
+            if asked by someone else who has missed it? We learned that:
+        <ul>
+            <li>
+                The inquiry is driven by agenda: participants are interested to
+                discussions related to their responsibilities, such as the project
+                they work on. However, the definition of relevance is broad.
+                Seemingly irrelevant projects might be useful if they share similar
+                work items. Their experience with one meeting is often influenced
+                by past meetings from the same serial.
+            </li>
+            <li>
+                Context is important when interpreting decisions: participants
+                want to know how a decision was reached, such as who proposed
+                the solution or how much deliberation happened; then they
+                assess the quality of the decision accordingly.
+            </li>
+            <li>
+                Long-term engagement patterns are informative for managing a
+                group: participants with managing responsibilities also emphasized
+                the importance of being able to understand the participation
+                of all group members across multiple meetings.
+            </li>
+        </ul>
+        </p>
+        <p>
+            The interviews helped us identify users with managing roles, e.g.,
+team managers, technical leads, as the target users, because their
+responsibilities require them to pay attention to engagement from
+both a productivity and a team building aspects. Along with the
+need of maintaining the agenda and context, two critical elements
+emerged from the interviews, we defined the following tasks:
+        </p>
+        <ul>
+            <li>
+                T1: Users should be able to compare and contrast participant
+engagement in multiple meetings based on their desired criteria.
+            </li>
+            <li>
+                T2: Users should be able to analyze meeting structures and
+speaking behavior in detail, such as the turn-take patterns, presentation
+formats, or interruptions.
+            </li>
+            <li>
+                T3: The transition between levels should be logical and intuitive.
+            </li>
+        </ul>
+
+
+        <h3>Discussion Flows: Overview level</h3>
+        <p>
+            At the top level, Discussion Flows
+            provides an overview of all meetings. Users can choose either a
+            week view where meetings are sorted into different columns representing
+            days of a week (Figure 2) or a time view where meetings
+            from the same week are sorted into rows representing time
+            slots. Time slots without meetings are minimized to save
+            interface estate.
+        </p>
+
+        <img class="size_m" src="image/overview_week.png">
+        <div class="caption">Overview in week view</div>
+        <img class="size_m" src="image/overview_time.png">
+        <div class="caption">Overview in time view</div>
+
+        <p>
+            We chose a glyph-based approach, which represents
+            each meeting as a small independent visual element. A main
+            strength of glyphs is that they allow the identification of patterns
+            involving several dimensions and they can be placed in different
+            layout strategies. Each glyph contains several
+            color-coded stacked bars. Each bar represents an item in the meeting
+            agenda and they are placed in the same order as they were
+            discussed in the meeting from left to right. Each colored segment
+            in these stacked bars represent one speaker and the height corresponds
+            to the duration of that person’s involvement in the agenda.
+        </p>
+
+        <p>
+            The colors used in the glyphs denote additional attributes about
+            speakers. The left side of the interface provides various filters that
+            help analyze meetings based on the speakers’ role, gender, or native
+            language. Each category employs a different color theme. When
+            selected, all glyphs would be updated to the corresponding colors
+            to contrast the differences among options within this category. The
+            speaker role is the default color theme. If a single option within a
+            category is selected as filter, we highlight the contributions from
+            applicable participants by greying out other’s contributions. Users
+            can go further to select a single individual to compare this person’s
+            contributions in different meetings. In addition, we offer a "Search
+            in Topics" feature to help locate all topics containing the keyword.
+        </p>
+
+        <h3>Flow Diagrams</h3>
+        <p>
+            To assist further analysis of
+            a particular meeting, Discussion Flows offers three more levels of
+            details that can be accessed by selecting the target of interest or
+            zooming. They provide more information about a meeting
+            by visualizing how participants with different roles and attributes
+            behave at different parts of the meeting agenda. We adopted flow
+            diagrams to convey a participant’s engagement from one agenda to another.
+        </p>
+        <p>
+            Flow diagrams allow using more visual attributes to convey additional
+            engagement information. The current prototype conveys
+            interruptions. We designed three types of lines to a flow’s top edge
+            to indicate how often a speaker is interrupted over an agenda. We approximate the level of interruption
+            based on the
+            number of utterances. A solid line means no or little interruptions,
+            a dashed line means some interruptions, and a dotted line means
+            many interruptions.
+        </p>
+        <p>
+            We also introduced different shades of color in
+            this view. The flow diagram inherits the same color theme from the
+            overview page so that users can maintain a consistent visual impression
+            of the engagement depicted, especially necessary if they
+            follow through from filtered results. For multiple participants with
+            the same role, we take the role color as the base color and produce
+            different shades according to other distinguishing attributes.
+            In the current implementation, we use speaker age for this calculation.
+        </p>
+
+        <h3>Discussion Flows: Topic levels</h3>
+        <p>
+            At the topic level, the vertical axis depicts
+            the duration of time spent on one agenda and the horizontal
+            axis represents the order in which the agendas were discussed. To
+            help trace a speaker, the flows of speakers who do not contribute to
+            an agenda are still drawn, but passing below the agenda bar. Agenda
+            descriptions were printed under the corresponding bars. A small Parallel Coordinate, shown on the
+            left side of the flows, is designed to augment participants with additional
+            attributes. They also serve as filter controls. Users can select
+            an attribute to highlight the corresponding flows.
+        </p>
+        <img src="image/fd_1.png">
+        <div class="caption">A meeting with eight participants; the discussions cover five main topics.</div>
+        <img src="image/fd_female.png">
+        <div class="caption">Contributions from female speakers are highlighted.</div>
+        <p>
+            It is common that a top level agenda has multiple sub items. Therefore, we designated level 2 to show only
+            top level agenda.
+            When users wish to learn more of a discussion, they can zoom in
+            to reveal the current agenda’s sub items.
+        </p>
+        <img src="image/fd_2.png">
+        <div class="caption">Each topic is broken down into smaller sub-topics.</div>
+        <img src="image/fd_3.png">
+        <div class="caption">Sub-topics may evolve into even more detailed topics.</div>
+
+        <h3>Discussion Flows: Word level</h3>
+        <p>
+            Users can also navigate to the word level, which summarizes
+            participant contributions during a customizable time interval
+            instead of agendas. With a smaller interval users can observe closeup
+            interactions, such as overlapping of agenda sub items. Filter and
+            highlight features work the same as previous levels.
+        </p>
+        <img src="image/w_300.png">
+        <div class="caption">When visualized at 5-minute intervals, we see the overall contribution from each speaker.</div>
+        <img src="image/w_60.png">
+        <div class="caption">At 1-minute intervals, the interactions from participants become alive.</div>
+        <img src="image/w_30.png">
+        <div class="caption">At 30-second intervals, we observe more interactions among speakers .</div>
+        <p>
+    </main>
+    <footer>
+        <a target="_blank"
+        href="https://visualization-92663.wl.r.appspot.com/discussionflows.html" target="_blank">Try the
+        interactive Discussion Flows prototype here</a>.
+</p>
+    </footer>
+</body>
+
 </html>
