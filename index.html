@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170794795-1"></script>
@@ -24,7 +25,7 @@
             border: solid 1px #ccc;
         }
 
-        img.size_m{
+        img.size_m {
             width: 80%;
             margin-left: 10%;
         }
@@ -44,7 +45,7 @@
             font-weight: bold;
         }
 
-        footer{
+        footer {
             text-align: center;
             margin: 100px auto;
         }
@@ -52,6 +53,28 @@
         hr {
             width: 80%;
             margin: 50px auto;
+        }
+
+        .author_block{
+            float: left;
+            height: 100px;
+            width: 30%;
+            text-align: center;
+        }
+
+        .author_block .name{
+            font-weight: bold;
+        }
+
+        .author_block .affiliation{
+            font-size: 0.8em;
+            margin: 10px 0;
+        }
+
+        .author_row::after {
+            content: "";
+            clear: both;
+            display: table;
         }
 
         .banner {
@@ -88,7 +111,21 @@
             <h1>Discussion Flows</h1>
             <h3>An Interactive Visualization for Analyzing Engagement in Multi-Party Meetings</h3>
         </header>
-        <img src="image/flow_full.png">
+        <div class="author_row">
+            <div class="author_block">
+                <div class="name"><a href="http://icn.sap.com/">Tao Wang</a></div>
+                <div class="affiliation">SAP Innovation Center, USA</div>
+            </div>
+            <div class="author_block">
+                <div class="name"><a href="https://scholar.google.com/citations?user=4OmFoDoAAAAJ">Mandy Keck</a></div>
+                <div class="affiliation">University of Applied Sciences Upper Austria</div>
+            </div>
+            <div class="author_block">
+                <div class="name"><a href="https://scholar.google.com/citations?user=3uPW93IAAAAJ">Zana Vosough</a></div>
+                <div class="affiliation">Independent Researcher, San Francisco, USA</div>
+            </div>
+        </div>
+
         <p>
             Engagement in multi-party meetings is a key indicator of outcome. Poor attendee involvement can hinder
             progress and hurt team cohesion. With a better understanding of what happens in meetings, organizations
@@ -119,6 +156,7 @@
             of the system. We hope the feedback would help us refine the design and pave the way for Discussion Flows to
             be used in every meeting room.
         </p>
+        <img src="image/flow_full.png">
         <p>
             You will find more information on how to use Discussion Flows below. You can also <a target="_blank"
                 href="https://visualization-92663.wl.r.appspot.com/discussionflows.html" target="_blank">try the
@@ -140,7 +178,7 @@
 
         <h3>Requirments and Design</h3>
         <p>
-            We started with a user-centered design process [AMKP04] to ensure
+            We started with a user-centered design process to ensure
             that our design goals were grounded on realistic use cases.
             We conducted ten semi-structured interviews with participants recruited
             from our industry partner SAP, a large enterprise software
@@ -175,21 +213,21 @@
         </p>
         <p>
             The interviews helped us identify users with managing roles, e.g.,
-team managers, technical leads, as the target users, because their
-responsibilities require them to pay attention to engagement from
-both a productivity and a team building aspects. Along with the
-need of maintaining the agenda and context, two critical elements
-emerged from the interviews, we defined the following tasks:
+            team managers, technical leads, as the target users, because their
+            responsibilities require them to pay attention to engagement from
+            both a productivity and a team building aspects. Along with the
+            need of maintaining the agenda and context, two critical elements
+            emerged from the interviews, we defined the following tasks:
         </p>
         <ul>
             <li>
                 T1: Users should be able to compare and contrast participant
-engagement in multiple meetings based on their desired criteria.
+                engagement in multiple meetings based on their desired criteria.
             </li>
             <li>
                 T2: Users should be able to analyze meeting structures and
-speaking behavior in detail, such as the turn-take patterns, presentation
-formats, or interruptions.
+                speaking behavior in detail, such as the turn-take patterns, presentation
+                formats, or interruptions.
             </li>
             <li>
                 T3: The transition between levels should be logical and intuitive.
@@ -202,7 +240,7 @@ formats, or interruptions.
             At the top level, Discussion Flows
             provides an overview of all meetings. Users can choose either a
             week view where meetings are sorted into different columns representing
-            days of a week (Figure 2) or a time view where meetings
+            days of a week or a time view where meetings
             from the same week are sorted into rows representing time
             slots. Time slots without meetings are minimized to save
             interface estate.
@@ -308,20 +346,17 @@ formats, or interruptions.
             highlight features work the same as previous levels.
         </p>
         <img src="image/w_300.png">
-        <div class="caption">When visualized at 5-minute intervals, we see the overall contribution from each speaker.</div>
+        <div class="caption">When visualized at 5-minute intervals, we see the overall contribution from each speaker.
+        </div>
         <img src="image/w_60.png">
         <div class="caption">At 1-minute intervals, the interactions from participants become alive.</div>
         <img src="image/w_30.png">
-        <div class="caption">At 30-second intervals, we observe more interactions among speakers .</div>
-        <p>
+        <div class="caption">At 30-second intervals, we observe more interactions among speakers.</div>
     </main>
     <footer>
-        <a target="_blank"
-        href="https://visualization-92663.wl.r.appspot.com/discussionflows.html" target="_blank">Try the
-        interactive Discussion Flows prototype here</a>.
-</p>
+        <a target="_blank" href="https://visualization-92663.wl.r.appspot.com/discussionflows.html" target="_blank">Try
+            the interactive Discussion Flows prototype here</a>.
     </footer>
 </body>
 
 </html>
-
