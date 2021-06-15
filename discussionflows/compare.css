@@ -1,0 +1,337 @@
+body {
+    width: 2700px;
+    margin: 20px;
+    font-family: 'Roboto', sans-serif;
+    /* font-weight: 400;
+    font-size: 20px; */
+    font-weight: 100;
+    font-size: 15px;
+}
+
+/* customize radio boxes */
+
+/* Customize the label (the container) */
+.rb_container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    padding-top: 3px;
+    cursor: pointer;
+    font-weight: bold;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Hide the browser's default radio button */
+  .rb_container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom radio button */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background: url("style/unselected.png") no-repeat center;
+    background-size: contain;
+  }
+  
+  /* When the radio button is checked, change to selected icon */
+  .rb_container input:checked ~ .checkmark {
+    background: url("style/selected.png") no-repeat center;
+    background-size: contain;
+  }
+
+  .rb_container input:checked ~ .checkvalue{
+      color: #376AAD;
+  }
+  
+  /* end of customize radio boxes */
+
+.mode_container{
+    width: 100%;
+}
+.mode_select{
+    margin: 20px;
+    float:left;
+}
+.toggle_container{
+    margin: 30px 0 50px 50px;
+    background-color: #F8F8F6;
+}
+.toggleLabel{
+    position: relative;
+    top: 10px;
+    margin: 0 10px;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+#canvas_container{
+}
+#canvas_container canvas {
+    padding: 0px;
+    margin: 0px;
+}
+.column.alt .invisible{
+    color: #EBECEB;
+}
+.column .invisible{
+    color: #F8F8F6;
+}
+.row.alt .invisible{
+    color: #EBECEB;
+}
+.row .invisible{
+    color: #F8F8F6;
+}
+.alt{
+    background-color: #EBECEB !important;
+}
+.row{
+    background-color: #F8F8F6;
+    height: 200px;
+    width: 100px;
+}
+.row div{
+    float: left;
+}
+.empty_row{
+    background-color: #EBECEB;
+    padding: 5px 0 5px 0;
+    height: 5px;
+    width: 100%;
+}
+.column{
+    width: 300px;
+    float:left;
+    text-align: center;
+    padding: 10px;
+    background-color: #F8F8F6;
+    margin-right: 5px;
+}
+.heading{
+    /* font-weight: 800; */
+    font-weight: 400;
+    margin: 10px;
+    font-size: 1.2em;
+}
+.meeting_discription {
+    width: 100%;
+    margin: 50px 5px 10px;
+}
+
+.speaker_row::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.speaker_container {
+    float: left;
+    padding: 5px 10px;
+    margin: 5px 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.horizontal_container {
+    float: left;
+    margin-right: 15px;
+}
+
+.clear {
+    clear: both;
+}
+
+.filter_row{
+    cursor: pointer;
+}
+#control_container {
+    width: 310px;
+    background-color: #F8F8F6;
+}
+.control_toggle{
+    display: none;
+}
+.control_group {
+    margin-bottom: 50px;
+}
+
+.control_group div {
+    margin: 5px;
+    text-transform: capitalize;
+}
+
+#viz_container {
+    width: 2300px;
+    overflow: scroll;
+    /* background-color: grey; */
+}
+.filter_current{
+    background-color: #EBECEB;
+}
+.meeting_container {
+    float: left;
+    text-align: center;
+    /* background-color: white; */
+    /* background-color: white; */
+    margin: 0 0 5px 0;
+}
+.column .meeting_container{
+    border-top: solid 1px #EBECEB;
+}
+.alt .meeting_container{
+    border-top: solid 1px #F8F8F6 !important;
+}
+.row .meeting_container{
+    border-right: solid 1px #EBECEB;
+}
+.row.alt .meeting_container{
+    border-right: solid 1px #F8F8F6;
+}
+.centered{
+    text-align: center;
+}
+.group_name {
+    width: 30%;
+    text-align: right;
+    float: left;
+    text-transform: uppercase;
+}
+.data_selected{
+    color: #376AAD;
+    font-weight: bold;
+}
+.icon_hide{
+    /* position: relative;
+    top: 2px; */
+    background:url("style/filter.png") center no-repeat;
+    background-size: 20px;
+    
+}
+.icon_show{
+    /* position: relative;
+    top: 2px; */
+    background:url("style/erase.png") center no-repeat;
+    background-size: 20px;
+}
+.group_value_heading {
+    width: 150px;
+    text-align: left;
+    float: left;
+}
+
+.group_value {
+    width: 30px;
+    text-align: left;
+    float: left;
+}
+
+.group_control {
+    width: 5%;
+    text-align: center;
+    float: left;
+}
+
+.group_list {
+    font-size: 0.8em;
+    ;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.panel_group_list {
+    display: none;
+}
+
+.value_bar {
+    float: left;
+    height: 10px;
+    background-color: greenyellow;
+    position: relative;
+    top: 4px;
+}
+.status_container{
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+}
+.search{
+    width: 200px;
+    height: 30px;
+    margin: 10px 0  0 20px;
+}
+#btnGo{
+    width: 50px;
+    height: 35px;
+    font-family: 'Roboto', sans-serif;
+}

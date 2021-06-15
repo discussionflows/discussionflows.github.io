@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170794795-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-170794795-1');
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="const.js"></script>
+    <script src="transcript.js"></script>
+    <script src="helper.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+
+        
+        var allSpeakers;
+        var allTopics={};
+        var folder = "output";
+        var fileJson;
+        var fileName;
+        
+
+
+        $(document).ready(function () {
+            fileName = getParameterByName("file");
+            loadJson();
+        });
+
+
+        function loadJson() {
+
+            console.log("================");
+            $.getJSON(folder + "/meetinginfo.json", function (meetingInfo) {
+                allSpeakers = meetingInfo.speakers;
+
+                $.getJSON(folder + "/" + fileName, function (json) {
+                    fileJson = json;
+                    loadTranscript();
+                });
+
+            });
+
+
+        }
+
+
+        function loadTranscript() {
+
+            
+            var transcript = new Transcript(fileJson);
+            var participants = fileJson.speakers;
+            var starttime = fileJson.transcript[0].starttime;
+            var endtime = fileJson.transcript[fileJson.transcript.length - 1].endtime;
+            var duration = Math.round((endtime - starttime) / 60);
+            var topicList = transcript.getTopicList(100);
+            for(var t of topicList){
+                allTopics[t.id] = t;
+            }
+
+
+            $('<div>').attr({
+                id: "info_" + (fileName.replace(".json", "")),
+                class: "meeting_discription"
+            }).appendTo('#meetinginfo_container');
+
+
+            var infoID = "info_" + (fileName.replace(".json", ""));
+            var canvasID = "canvas_" + (fileName.replace(".json", ""));
+
+            var canvas = document.getElementById(canvasID);
+
+
+            $("#" + infoID).html("<b>File Name:</b> " + fileName.replace(".json", "")
+                + "; <b>Meeting Duration:</b> " + duration + " Minutes"
+                + "; <b>Participant Count:</b> " + participants.length
+                + "; <b>Topic Count:</b> " + allTopics.length
+                + "; <a href=\"topics.html?file=" + fileName + "&theme=education\">Topics</a>"
+                + "; <a href=\"words.html?file=" + fileName + "&theme=education\">Words</a>"
+                + "<br/>");
+
+
+            var participantList = {};
+            for(var p of participants){
+                participantList[p.name] = allSpeakers[p.name];
+            }
+        
+            var size = 0;
+            for(var u of transcript.utterancelist){
+
+                if(size++<10000){
+                
+                var utteranceTopics = [];
+                var currentTopic = allTopics[u.topic];
+                while(currentTopic!=null){
+                    utteranceTopics.push(currentTopic);
+                    currentTopic = allTopics[currentTopic.parent];
+                }
+
+                var topicList = "";
+                var n = utteranceTopics.length;
+                for(var i=1; i<=n; i++){
+                    topicList += "<div style=\"padding-left:"+(utteranceTopics[n-i].level*20)+"px\">- "+utteranceTopics[n-i].description+"</div>";
+                }
+
+                $("#transcript_container").append("<div class=\"utterance_container\">"
+                    +"<div class=\"speaker_container\">"+u.speakerID 
+                        + "<div>(Education:"+participantList[u.speakerID].education+" ; Gender:"+participantList[u.speakerID].gender+" ; English:"+participantList[u.speakerID].english+")</div>" 
+                        +"</div>"
+                    +"<div class=\"time_container\">("+u.starttime+" - "+u.endtime+")</div>"
+                    +"<div class=\"text_container\">"+u.fullText+"</div>"
+                    +"<div class=\"topic_container\">"
+                        +topicList
+                    +"</div>"
+                    +"</div><div class=\"clear\"></div>");
+                }
+            }
+
+        }
+
+        
+    </script>
+    <style>
+        @font-face {
+            font-family: 'RobotoThin';
+            src: url('style/Roboto/Roboto-Thin.ttf');
+        }
+        @font-face {
+            font-family: 'RobotoRegular';
+            src: url('style/Roboto/Roboto-Regular.ttf');
+        }
+        body{
+            font-family: RobotoThin, Helvetica, sans-serif;
+        }
+        #meetinginfo_container{
+            margin: 20px;
+        }
+        .utterance_container{
+            width: 1400px;
+            border: solid 1px #ccc;
+        }
+        .clear{
+            clear: both;
+        }
+        .speaker_container{
+            width: 200px;
+            font-family: RobotoRegular;
+            float:left;
+            margin: 20px;
+        }
+        .time_container{
+            width: 150px;
+            float:left;
+            margin: 20px;
+        }
+        .text_container{
+            width: 500px;
+            float:left;
+            margin: 20px;
+        }
+        .topic_container{
+            width: 300px;
+            float:left;
+            margin: 20px;
+        }        
+    </style>
+
+</head>
+
+<body>
+
+    <div id="meetinginfo_container"></div>
+    <div class="clear"></div>
+    <div id="transcript_container"></div>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170794795-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-170794795-1');
+    </script>
+
+    <!-- load font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    <script src="const.js"></script>
+    <script src="transcript.js"></script>
+    <script src="compare.js"></script>
+
+    <link rel="stylesheet" href="compare.css">
+</head>
+
+<body>
+    <div id="control_container" class="horizontal_container">
+        <div class="mode_container control_toggle">
+            <div class="mode_select">
+                <label class="rb_container">
+                    <input id="rbWeek" type="radio" name="modeselect" value="week" checked>
+                    <span class="checkmark"></span>
+                    <span class="checkvalue">Weeks</span>
+                </label>
+            </div>
+            <div class="mode_select">
+                <label class="rb_container">
+                    <input id="rbDay" type="radio" name="modeselect" value="day">
+                    <span class="checkmark"></span>
+                    <span class="checkvalue">Days</span>
+                </label>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div id="control_education" class="control_group control_toggle">
+            <div class="filter_row heading filter_current" data-filter="edu_all">
+                <div class="group_name">role</div>
+                <div class="group_value icon_show">&nbsp;</div>
+                <div class="group_value_heading">&nbsp;&nbsp;&nbsp;#Meetings</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div id="control_gender" class="control_group control_toggle">
+            <div class="filter_row heading" data-filter="gen_all">
+                <div class="group_name">Gender</div>
+                <div class="group_value">&nbsp;</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div id="control_english" class="control_group control_toggle">
+            <div class="filter_row heading" data-filter="lan_all">
+                <div class="group_name">English</div>
+                <div class="group_value">&nbsp;</div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div id="control_english" class="control_group control_toggle">
+            <div class="heading" data-filter="lan_all">
+                <div>Search in Topics</div>
+                <div>
+                    <input id="txtSearch" type="text" class="search">
+                    <button id="btnGo">Go</button>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <p id="loadingStatus" class="status_container"></p>
+
+    </div>
+    
+    <div id="viz_container" class="horizontal_container">
+        <div id="canvas_container"></div>
+    </div>
+    <div class="clear" />
+</body>
+
+</html>

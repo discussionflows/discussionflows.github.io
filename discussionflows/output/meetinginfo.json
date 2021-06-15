@@ -1,0 +1,1827 @@
+{
+    "meetings": {
+        "Bdb001": {
+            "name": "Bdb001",
+            "type": "bdb",
+            "description": "Database discussion",
+            "dateTimeStamp": "2001-02-16-1000",
+            "dateStamp": "2001-02-16",
+            "timeStamp": "1000",
+            "starttime": "0.0",
+            "endtime": "3021.968",
+            "participants": [
+                "mn017",
+                "me001",
+                "me011",
+                "me018",
+                "fe008",
+                "fe016"
+            ]
+        },
+        "Bed002": {
+            "name": "Bed002",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-02-05-1500",
+            "dateStamp": "2001-02-05",
+            "timeStamp": "1500",
+            "starttime": "0.0",
+            "endtime": "3915.955",
+            "participants": [
+                "me011",
+                "mn015",
+                "me010",
+                "fe004",
+                "me003",
+                "me012"
+            ]
+        },
+        "Bed003": {
+            "name": "Bed003",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-02-12-1500",
+            "dateStamp": "2001-02-12",
+            "timeStamp": "1500",
+            "starttime": "0.0",
+            "endtime": "4448.92",
+            "participants": [
+                "mn015",
+                "me003",
+                "me012",
+                "fe004",
+                "fe016"
+            ]
+        },
+        "Bed004": {
+            "name": "Bed004",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-02-26-1500",
+            "dateStamp": "2001-02-26",
+            "timeStamp": "1500",
+            "starttime": "0.0",
+            "endtime": "3399.123",
+            "participants": [
+                "me003",
+                "me010",
+                "me012",
+                "mn015",
+                "fe016",
+                "fe046",
+                "fe903"
+            ]
+        },
+        "Bed005": {
+            "name": "Bed005",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-03-12-1500",
+            "dateStamp": "2001-03-12",
+            "timeStamp": "1500",
+            "starttime": "0.0",
+            "endtime": "3962.16",
+            "participants": [
+                "me003",
+                "me010",
+                "mn015",
+                "me012",
+                "fe004",
+                "mn036"
+            ]
+        },
+        "Bed006": {
+            "name": "Bed006",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-03-19-1500",
+            "dateStamp": "2001-03-19",
+            "timeStamp": "1500",
+            "starttime": "0.0",
+            "endtime": "3758.888",
+            "participants": [
+                "mn036",
+                "me003",
+                "mn015",
+                "fe046",
+                "me045",
+                "me012",
+                "fe004"
+            ]
+        },
+        "Bed008": {
+            "name": "Bed008",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-04-23-1600",
+            "dateStamp": "2001-04-23",
+            "timeStamp": "1600",
+            "starttime": "0.0",
+            "endtime": "5153.39",
+            "participants": [
+                "me045",
+                "me010",
+                "me003",
+                "me012",
+                "mn015"
+            ]
+        },
+        "Bed009": {
+            "name": "Bed009",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-04-30-1600",
+            "dateStamp": "2001-04-30",
+            "timeStamp": "1600",
+            "starttime": "0.0",
+            "endtime": "3224.544",
+            "participants": [
+                "mn048",
+                "mn015",
+                "me012",
+                "mn047",
+                "me003",
+                "me010",
+                "mn036"
+            ]
+        },
+        "Bed010": {
+            "name": "Bed010",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-05-07-1600",
+            "dateStamp": "2001-05-07",
+            "timeStamp": "1600",
+            "starttime": "0.0",
+            "endtime": "3194.51",
+            "participants": [
+                "mn036",
+                "me045",
+                "me010",
+                "me003",
+                "mn015",
+                "fe004",
+                "me012"
+            ]
+        },
+        "Bed011": {
+            "name": "Bed011",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-05-14-1600",
+            "dateStamp": "2001-05-14",
+            "timeStamp": "1600",
+            "starttime": "0.0",
+            "endtime": "3276.915",
+            "participants": [
+                "fn050",
+                "me045",
+                "mn015",
+                "me010",
+                "fe046",
+                "mn036",
+                "fe004"
+            ]
+        },
+        "Bed012": {
+            "name": "Bed012",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-05-22-1530",
+            "dateStamp": "2001-05-22",
+            "timeStamp": "1530",
+            "starttime": "0.0",
+            "endtime": "2634.355",
+            "participants": [
+                "me012",
+                "mn015",
+                "me003",
+                "fn050"
+            ]
+        },
+        "Bed013": {
+            "name": "Bed013",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-06-07-1315",
+            "dateStamp": "2001-06-07",
+            "timeStamp": "1315",
+            "starttime": "0.0",
+            "endtime": "3579.35",
+            "participants": [
+                "fe004",
+                "me003",
+                "fn050",
+                "mn015",
+                "me045"
+            ]
+        },
+        "Bed014": {
+            "name": "Bed014",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-06-14-1600",
+            "dateStamp": "2001-06-14",
+            "timeStamp": "1600",
+            "starttime": "0.0",
+            "endtime": "3544.622",
+            "participants": [
+                "me045",
+                "fe004",
+                "me010",
+                "me003",
+                "mn015",
+                "fn050"
+            ]
+        },
+        "Bed015": {
+            "name": "Bed015",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-06-18-1400",
+            "dateStamp": "2001-06-18",
+            "timeStamp": "1400",
+            "starttime": "0.0",
+            "endtime": "4861.728",
+            "participants": [
+                "mn015",
+                "me003",
+                "me010",
+                "fn050",
+                "me045",
+                "fe004"
+            ]
+        },
+        "Bed016": {
+            "name": "Bed016",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-06-21-1620",
+            "dateStamp": "2001-06-21",
+            "timeStamp": "1620",
+            "starttime": "0.0",
+            "endtime": "2828.947",
+            "participants": [
+                "fe004",
+                "fn050",
+                "mn015",
+                "me003",
+                "me010",
+                "me045",
+                "fe016",
+                "fe901",
+                "fe046",
+                "xe902"
+            ]
+        },
+        "Bed017": {
+            "name": "Bed017",
+            "type": "bed",
+            "description": "Even Deeper Understanding",
+            "dateTimeStamp": "2001-07-19-1600",
+            "dateStamp": "2001-07-19",
+            "timeStamp": "1600",
+            "starttime": "0.0",
+            "endtime": "2381.491",
+            "participants": [
+                "fe004",
+                "mn015",
+                "mn059",
+                "fn050",
+                "me003",
+                "me010"
+            ]
+        },
+        "Bmr001": {
+            "name": "Bmr001",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2000-02-02-1700",
+            "dateStamp": "2000-02-02",
+            "timeStamp": "1700",
+            "starttime": "0.0",
+            "endtime": "2188.925",
+            "participants": [
+                "me013",
+                "me011",
+                "me025"
+            ]
+        },
+        "Bmr002": {
+            "name": "Bmr002",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2000-02-16-1600",
+            "dateStamp": "2000-02-16",
+            "timeStamp": "1600",
+            "starttime": "0.0",
+            "endtime": "2746.776",
+            "participants": [
+                "me022",
+                "me011",
+                "me025",
+                "fe008"
+            ]
+        },
+        "Bmr003": {
+            "name": "Bmr003",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2000-03-08-1530",
+            "dateStamp": "2000-03-08",
+            "timeStamp": "1530",
+            "starttime": "0.0",
+            "endtime": "4624.589",
+            "participants": [
+                "me011",
+                "me025",
+                "me022",
+                "me028",
+                "fe008",
+                "me904"
+            ]
+        },
+        "Bmr005": {
+            "name": "Bmr005",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2000-10-26-1440",
+            "dateStamp": "2000-10-26",
+            "timeStamp": "1440",
+            "starttime": "0.0",
+            "endtime": "4262.598",
+            "participants": [
+                "me018",
+                "fe008",
+                "fe016",
+                "mn005",
+                "me013",
+                "mn017",
+                "me011",
+                "me001"
+            ]
+        },
+        "Bmr006": {
+            "name": "Bmr006",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2000-11-02-1440",
+            "dateStamp": "2000-11-02",
+            "timeStamp": "1440",
+            "starttime": "0.0",
+            "endtime": "4715.08",
+            "participants": [
+                "me018",
+                "me011",
+                "mn005",
+                "me013",
+                "fe008",
+                "fe016"
+            ]
+        },
+        "Bmr007": {
+            "name": "Bmr007",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2000-11-09-1445",
+            "dateStamp": "2000-11-09",
+            "timeStamp": "1445",
+            "starttime": "0.0",
+            "endtime": "3603.427",
+            "participants": [
+                "me018",
+                "fe016",
+                "mn014",
+                "me013",
+                "mn005",
+                "fe008",
+                "mn017",
+                "me011"
+            ]
+        },
+        "Bmr008": {
+            "name": "Bmr008",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2000-11-30-1450",
+            "dateStamp": "2000-11-30",
+            "timeStamp": "1450",
+            "starttime": "0.0",
+            "endtime": "4095.272",
+            "participants": [
+                "fe016",
+                "me013",
+                "mn005",
+                "me011",
+                "me018",
+                "fe008"
+            ]
+        },
+        "Bmr009": {
+            "name": "Bmr009",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2000-12-07-1450",
+            "dateStamp": "2000-12-07",
+            "timeStamp": "1450",
+            "starttime": "0.0",
+            "endtime": "2997.123",
+            "participants": [
+                "me011",
+                "fe008",
+                "me013",
+                "fe016",
+                "mn005"
+            ]
+        },
+        "Bmr010": {
+            "name": "Bmr010",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-01-11-1440",
+            "dateStamp": "2001-01-11",
+            "timeStamp": "1440",
+            "starttime": "0.0",
+            "endtime": "3267.963",
+            "participants": [
+                "me011",
+                "mn017",
+                "mn014",
+                "mn005",
+                "me018",
+                "fe008",
+                "me013",
+                "fe905"
+            ]
+        },
+        "Bmr011": {
+            "name": "Bmr011",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-01-25-1430",
+            "dateStamp": "2001-01-25",
+            "timeStamp": "1430",
+            "starttime": "0.0",
+            "endtime": "4022.261",
+            "participants": [
+                "fe016",
+                "me013",
+                "mn014",
+                "mn005",
+                "me018",
+                "me001",
+                "fe008",
+                "me011"
+            ]
+        },
+        "Bmr012": {
+            "name": "Bmr012",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-02-01-1500",
+            "dateStamp": "2001-02-01",
+            "timeStamp": "1500",
+            "starttime": "0.0",
+            "endtime": "2518.894",
+            "participants": [
+                "mn017",
+                "me013",
+                "fe016",
+                "me018",
+                "me011",
+                "me001",
+                "fe008",
+                "mn005",
+                "mn014",
+                "mn009"
+            ]
+        },
+        "Bmr013": {
+            "name": "Bmr013",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-02-08-1430",
+            "dateStamp": "2001-02-08",
+            "timeStamp": "1430",
+            "starttime": "0.0",
+            "endtime": "2907.472",
+            "participants": [
+                "mn014",
+                "fe008",
+                "me013",
+                "me018",
+                "me001",
+                "me011",
+                "fe016"
+            ]
+        },
+        "Bmr014": {
+            "name": "Bmr014",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-02-15-1445",
+            "dateStamp": "2001-02-15",
+            "timeStamp": "1445",
+            "starttime": "0.0",
+            "endtime": "3013.304",
+            "participants": [
+                "mn014",
+                "me018",
+                "me011",
+                "mn009",
+                "me013",
+                "fe008"
+            ]
+        },
+        "Bmr015": {
+            "name": "Bmr015",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-03-01-1445",
+            "dateStamp": "2001-03-01",
+            "timeStamp": "1445",
+            "starttime": "0.0",
+            "endtime": "2974.315",
+            "participants": [
+                "me013",
+                "me011",
+                "mn005",
+                "me001",
+                "mn014",
+                "fe008",
+                "me018"
+            ]
+        },
+        "Bmr016": {
+            "name": "Bmr016",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-03-08-1445",
+            "dateStamp": "2001-03-08",
+            "timeStamp": "1445",
+            "starttime": "0.0",
+            "endtime": "3935.573",
+            "participants": [
+                "mn014",
+                "me018",
+                "me001",
+                "me011",
+                "fe008",
+                "me013",
+                "fe016"
+            ]
+        },
+        "Bmr018": {
+            "name": "Bmr018",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-03-22-1450",
+            "dateStamp": "2001-03-22",
+            "timeStamp": "1450",
+            "starttime": "0.0",
+            "endtime": "3421.928",
+            "participants": [
+                "fe008",
+                "me018",
+                "me013",
+                "fe016",
+                "me011",
+                "mn017",
+                "me001"
+            ]
+        },
+        "Bmr019": {
+            "name": "Bmr019",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-03-29-1400",
+            "dateStamp": "2001-03-29",
+            "timeStamp": "1400",
+            "starttime": "0.0",
+            "endtime": "3586.171",
+            "participants": [
+                "fe016",
+                "me013",
+                "fe008",
+                "mn014",
+                "me011",
+                "mn017",
+                "me001",
+                "mn005",
+                "me026"
+            ]
+        },
+        "Bmr020": {
+            "name": "Bmr020",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-04-05-1445",
+            "dateStamp": "2001-04-05",
+            "timeStamp": "1445",
+            "starttime": "0.0",
+            "endtime": "3353.302",
+            "participants": [
+                "me011",
+                "mn014",
+                "fe008",
+                "me018",
+                "me001",
+                "me013",
+                "mn017"
+            ]
+        },
+        "Bmr021": {
+            "name": "Bmr021",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-04-26-1445",
+            "dateStamp": "2001-04-26",
+            "timeStamp": "1445",
+            "starttime": "0.0",
+            "endtime": "2211.973",
+            "participants": [
+                "me011",
+                "mn017",
+                "mn014",
+                "me001",
+                "me018",
+                "fe008"
+            ]
+        },
+        "Bmr022": {
+            "name": "Bmr022",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-05-03-1445",
+            "dateStamp": "2001-05-03",
+            "timeStamp": "1445",
+            "starttime": "0.0",
+            "endtime": "2977.79",
+            "participants": [
+                "me011",
+                "me013",
+                "fe016",
+                "mn014",
+                "me018",
+                "fe008"
+            ]
+        },
+        "Bmr023": {
+            "name": "Bmr023",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-05-17-1430",
+            "dateStamp": "2001-05-17",
+            "timeStamp": "1430",
+            "starttime": "0.0",
+            "endtime": "3209.454",
+            "participants": [
+                "fe008",
+                "me001",
+                "mn017",
+                "me018",
+                "mn014",
+                "me013",
+                "fe016"
+            ]
+        },
+        "Bmr024": {
+            "name": "Bmr024",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-05-24-1450",
+            "dateStamp": "2001-05-24",
+            "timeStamp": "1450",
+            "starttime": "0.0",
+            "endtime": "3109.302",
+            "participants": [
+                "fe008",
+                "me018",
+                "me051",
+                "me013",
+                "mn014",
+                "me011",
+                "fe016",
+                "me001",
+                "mn017"
+            ]
+        },
+        "Bmr025": {
+            "name": "Bmr025",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-05-31-1455",
+            "dateStamp": "2001-05-31",
+            "timeStamp": "1455",
+            "starttime": "0.0",
+            "endtime": "1988.053",
+            "participants": [
+                "fe008",
+                "me013",
+                "me001",
+                "mn014",
+                "me022",
+                "me018",
+                "fe016",
+                "me011"
+            ]
+        },
+        "Bmr026": {
+            "name": "Bmr026",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-06-07-1455",
+            "dateStamp": "2001-06-07",
+            "timeStamp": "1455",
+            "starttime": "0.0",
+            "endtime": "2692.958",
+            "participants": [
+                "me011",
+                "me013",
+                "mn014",
+                "mn017",
+                "me001",
+                "me018"
+            ]
+        },
+        "Bmr027": {
+            "name": "Bmr027",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-06-14-1450",
+            "dateStamp": "2001-06-14",
+            "timeStamp": "1450",
+            "starttime": "0.0",
+            "endtime": "2931.915",
+            "participants": [
+                "fe008",
+                "me013",
+                "me018",
+                "me001",
+                "fe016",
+                "me011",
+                "me051",
+                "mn017"
+            ]
+        },
+        "Bmr028": {
+            "name": "Bmr028",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-06-21-1445",
+            "dateStamp": "2001-06-21",
+            "timeStamp": "1445",
+            "starttime": "0.0",
+            "endtime": "3312.331",
+            "participants": [
+                "me011",
+                "me018",
+                "me013",
+                "mn014",
+                "me001",
+                "fe008",
+                "me051",
+                "fe016",
+                "mn017"
+            ]
+        },
+        "Bmr029": {
+            "name": "Bmr029",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-07-05-1445",
+            "dateStamp": "2001-07-05",
+            "timeStamp": "1445",
+            "starttime": "0.0",
+            "endtime": "2596.926",
+            "participants": [
+                "me018",
+                "me026",
+                "me013",
+                "me051",
+                "mn014",
+                "mn017"
+            ]
+        },
+        "Bmr030": {
+            "name": "Bmr030",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-07-12-1450",
+            "dateStamp": "2001-07-12",
+            "timeStamp": "1450",
+            "starttime": "0.0",
+            "endtime": "1569.651",
+            "participants": [
+                "me001",
+                "me018",
+                "mn014",
+                "me051",
+                "me011"
+            ]
+        },
+        "Bmr031": {
+            "name": "Bmr031",
+            "type": "bmr",
+            "description": "Meeting Recorder project",
+            "dateTimeStamp": "2001-08-09-1450",
+            "dateStamp": "2001-08-09",
+            "timeStamp": "1450",
+            "starttime": "0.0",
+            "endtime": "3233.832",
+            "participants": [
+                "fe008",
+                "fe016",
+                "me013",
+                "mn014",
+                "me051",
+                "me011",
+                "mn017",
+                "me001",
+                "me018"
+            ]
+        },
+        "Bns001": {
+            "name": "Bns001",
+            "type": "bns",
+            "description": "Network Services & Applications",
+            "dateTimeStamp": "2000-11-07-1345",
+            "dateStamp": "2000-11-07",
+            "timeStamp": "1345",
+            "starttime": "0.0",
+            "endtime": "5980.085",
+            "participants": [
+                "mn035",
+                "mn021",
+                "mn081",
+                "mn082",
+                "mn030",
+                "me011",
+                "fn083",
+                "mn906"
+            ]
+        },
+        "Bns002": {
+            "name": "Bns002",
+            "type": "bns",
+            "description": "Network Services & Applications",
+            "dateTimeStamp": "2000-11-14-1340",
+            "dateStamp": "2000-11-14",
+            "timeStamp": "1340",
+            "starttime": "0.0",
+            "endtime": "6157.848",
+            "participants": [
+                "mn035",
+                "mn030",
+                "mn082",
+                "mn021",
+                "mn040",
+                "me011"
+            ]
+        },
+        "Bns003": {
+            "name": "Bns003",
+            "type": "bns",
+            "description": "Network Services & Applications",
+            "dateTimeStamp": "2000-11-21-1000",
+            "dateStamp": "2000-11-21",
+            "timeStamp": "1000",
+            "starttime": "0.0",
+            "endtime": "3007.032",
+            "participants": [
+                "fn083",
+                "mn030",
+                "mn021",
+                "mn082",
+                "mn081",
+                "mn035",
+                "me907",
+                "me011"
+            ]
+        },
+        "Bro003": {
+            "name": "Bro003",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2000-11-02-1050",
+            "dateStamp": "2000-11-02",
+            "timeStamp": "1050",
+            "starttime": "0.0",
+            "endtime": "5222.894",
+            "participants": [
+                "me018",
+                "me034",
+                "me006",
+                "me026",
+                "fn002",
+                "me013",
+                "mn007",
+                "me011"
+            ]
+        },
+        "Bro004": {
+            "name": "Bro004",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2000-11-30-1050",
+            "dateStamp": "2000-11-30",
+            "timeStamp": "1050",
+            "starttime": "0.0",
+            "endtime": "4207.686",
+            "participants": [
+                "me018",
+                "me013",
+                "me034",
+                "mn007",
+                "fn002",
+                "me006",
+                "me026",
+                "me011"
+            ]
+        },
+        "Bro005": {
+            "name": "Bro005",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2000-12-07-1040",
+            "dateStamp": "2000-12-07",
+            "timeStamp": "1040",
+            "starttime": "0.0",
+            "endtime": "4234.163",
+            "participants": [
+                "mn007",
+                "fn002",
+                "me006",
+                "me013",
+                "me026",
+                "me034",
+                "me011"
+            ]
+        },
+        "Bro007": {
+            "name": "Bro007",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-01-25-1045",
+            "dateStamp": "2001-01-25",
+            "timeStamp": "1045",
+            "starttime": "0.0",
+            "endtime": "2134.283",
+            "participants": [
+                "me006",
+                "me013",
+                "mn007",
+                "fn002",
+                "me026"
+            ]
+        },
+        "Bro008": {
+            "name": "Bro008",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-02-08-1100",
+            "dateStamp": "2001-02-08",
+            "timeStamp": "1100",
+            "starttime": "0.0",
+            "endtime": "2049.576",
+            "participants": [
+                "mn007",
+                "me006",
+                "me018",
+                "me013",
+                "fn002"
+            ]
+        },
+        "Bro010": {
+            "name": "Bro010",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-03-01-1030",
+            "dateStamp": "2001-03-01",
+            "timeStamp": "1030",
+            "starttime": "0.0",
+            "endtime": "2903.16",
+            "participants": [
+                "me018",
+                "mn007",
+                "me013",
+                "fn002",
+                "me006",
+                "me026"
+            ]
+        },
+        "Bro011": {
+            "name": "Bro011",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-03-09-1030",
+            "dateStamp": "2001-03-09",
+            "timeStamp": "1030",
+            "starttime": "0.0",
+            "endtime": "2268.27",
+            "participants": [
+                "me013",
+                "me018",
+                "mn007",
+                "fn002",
+                "me006",
+                "me026"
+            ]
+        },
+        "Bro012": {
+            "name": "Bro012",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-03-22-1030",
+            "dateStamp": "2001-03-22",
+            "timeStamp": "1030",
+            "starttime": "0.0",
+            "endtime": "3990.424",
+            "participants": [
+                "me013",
+                "me018",
+                "me026",
+                "fn002",
+                "me006",
+                "mn007"
+            ]
+        },
+        "Bro013": {
+            "name": "Bro013",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-03-29-1040",
+            "dateStamp": "2001-03-29",
+            "timeStamp": "1040",
+            "starttime": "0.0",
+            "endtime": "2278.347",
+            "participants": [
+                "me013",
+                "me006",
+                "me026",
+                "fn002",
+                "mn007"
+            ]
+        },
+        "Bro014": {
+            "name": "Bro014",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-04-05-1030",
+            "dateStamp": "2001-04-05",
+            "timeStamp": "1030",
+            "starttime": "0.0",
+            "endtime": "3475.317",
+            "participants": [
+                "mn007",
+                "me013",
+                "me018",
+                "me026",
+                "me006",
+                "fn002"
+            ]
+        },
+        "Bro015": {
+            "name": "Bro015",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-04-12-1030",
+            "dateStamp": "2001-04-12",
+            "timeStamp": "1030",
+            "starttime": "0.0",
+            "endtime": "1014.864",
+            "participants": [
+                "me018",
+                "me026",
+                "mn007",
+                "me013",
+                "fn002",
+                "me006"
+            ]
+        },
+        "Bro016": {
+            "name": "Bro016",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-04-19-1030",
+            "dateStamp": "2001-04-19",
+            "timeStamp": "1030",
+            "starttime": "0.0",
+            "endtime": "3019.707",
+            "participants": [
+                "me006",
+                "mn007",
+                "fn002",
+                "me026",
+                "me013",
+                "me018"
+            ]
+        },
+        "Bro017": {
+            "name": "Bro017",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-04-26-1030",
+            "dateStamp": "2001-04-26",
+            "timeStamp": "1030",
+            "starttime": "0.0",
+            "endtime": "3382.016",
+            "participants": [
+                "me006",
+                "mn049",
+                "mn007",
+                "fn002",
+                "me018"
+            ]
+        },
+        "Bro018": {
+            "name": "Bro018",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-05-03-1030",
+            "dateStamp": "2001-05-03",
+            "timeStamp": "1030",
+            "starttime": "0.0",
+            "endtime": "3442.08",
+            "participants": [
+                "me006",
+                "me026",
+                "me013",
+                "fn002",
+                "me018"
+            ]
+        },
+        "Bro019": {
+            "name": "Bro019",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-05-24-1030",
+            "dateStamp": "2001-05-24",
+            "timeStamp": "1030",
+            "starttime": "0.0",
+            "endtime": "3882.536",
+            "participants": [
+                "mn052",
+                "fn002",
+                "me013",
+                "mn007",
+                "me026",
+                "me018",
+                "me006"
+            ]
+        },
+        "Bro021": {
+            "name": "Bro021",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-06-14-1045",
+            "dateStamp": "2001-06-14",
+            "timeStamp": "1045",
+            "starttime": "0.0",
+            "endtime": "3628.635",
+            "participants": [
+                "me006",
+                "me013",
+                "mn007",
+                "mn052",
+                "fn002",
+                "me018",
+                "me026"
+            ]
+        },
+        "Bro022": {
+            "name": "Bro022",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-06-21-1030",
+            "dateStamp": "2001-06-21",
+            "timeStamp": "1030",
+            "starttime": "0.0",
+            "endtime": "3182.139",
+            "participants": [
+                "me018",
+                "me013",
+                "mn007",
+                "fn002",
+                "me026",
+                "me006",
+                "mn052"
+            ]
+        },
+        "Bro023": {
+            "name": "Bro023",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-07-05-1030",
+            "dateStamp": "2001-07-05",
+            "timeStamp": "1030",
+            "starttime": "0.0",
+            "endtime": "4425.555",
+            "participants": [
+                "me018",
+                "mn052",
+                "me013",
+                "mn007",
+                "me026"
+            ]
+        },
+        "Bro024": {
+            "name": "Bro024",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-07-12-1045",
+            "dateStamp": "2001-07-12",
+            "timeStamp": "1045",
+            "starttime": "0.0",
+            "endtime": "4739.093",
+            "participants": [
+                "me006",
+                "mn052",
+                "me026",
+                "me013",
+                "mn007",
+                "me018",
+                "mn058",
+                "fn002"
+            ]
+        },
+        "Bro025": {
+            "name": "Bro025",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-08-02-1045",
+            "dateStamp": "2001-08-02",
+            "timeStamp": "1045",
+            "starttime": "0.0",
+            "endtime": "2122.137",
+            "participants": [
+                "me018",
+                "me013",
+                "mn052",
+                "me006",
+                "mn007"
+            ]
+        },
+        "Bro026": {
+            "name": "Bro026",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-08-09-1045",
+            "dateStamp": "2001-08-09",
+            "timeStamp": "1045",
+            "starttime": "0.0",
+            "endtime": "3414.707",
+            "participants": [
+                "mn007",
+                "me013",
+                "me006",
+                "mn052",
+                "me018"
+            ]
+        },
+        "Bro027": {
+            "name": "Bro027",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-08-16-1045",
+            "dateStamp": "2001-08-16",
+            "timeStamp": "1045",
+            "starttime": "0.0",
+            "endtime": "4377.438",
+            "participants": [
+                "me018",
+                "me013",
+                "mn007",
+                "mn052"
+            ]
+        },
+        "Bro028": {
+            "name": "Bro028",
+            "type": "bro",
+            "description": "Robustness",
+            "dateTimeStamp": "2001-09-27-1430",
+            "dateStamp": "2001-09-27",
+            "timeStamp": "1430",
+            "starttime": "0.0",
+            "endtime": "3421.605",
+            "participants": [
+                "me018",
+                "me013",
+                "me026",
+                "mn007",
+                "me006"
+            ]
+        },
+        "Bsr001": {
+            "name": "Bsr001",
+            "type": "bsr",
+            "description": "SRI collaboration",
+            "dateTimeStamp": "2000-05-04-1700",
+            "dateStamp": "2000-05-04",
+            "timeStamp": "1700",
+            "starttime": "0.0",
+            "endtime": "3448.976",
+            "participants": [
+                "mn038",
+                "me055",
+                "mn057",
+                "fe008",
+                "me056",
+                "me011",
+                "fe016",
+                "me025",
+                "me013"
+            ]
+        },
+        "Btr001": {
+            "name": "Btr001",
+            "type": "btr",
+            "description": "Transcriber team",
+            "dateTimeStamp": "2002-04-11-1430",
+            "dateStamp": "2002-04-11",
+            "timeStamp": "1430",
+            "starttime": "0.0",
+            "endtime": "3978.48",
+            "participants": [
+                "fe066",
+                "fe067",
+                "fe068",
+                "fe069",
+                "me070",
+                "fe008",
+                "me011"
+            ]
+        },
+        "Btr002": {
+            "name": "Btr002",
+            "type": "btr",
+            "description": "Transcriber team",
+            "dateTimeStamp": "2002-04-18-1500",
+            "dateStamp": "2002-04-18",
+            "timeStamp": "1500",
+            "starttime": "0.0",
+            "endtime": "5318.936",
+            "participants": [
+                "me070",
+                "fe067",
+                "fe066",
+                "fe069",
+                "fe008",
+                "fe068",
+                "me011"
+            ]
+        },
+        "Buw001": {
+            "name": "Buw001",
+            "type": "buw",
+            "description": "UW collaboration",
+            "dateTimeStamp": "2000-06-30-1545",
+            "dateStamp": "2000-06-30",
+            "timeStamp": "1545",
+            "starttime": "0.0",
+            "endtime": "4109.075",
+            "participants": [
+                "fe041",
+                "fe016",
+                "fn043",
+                "me013",
+                "me025",
+                "me022",
+                "me011",
+                "fe008",
+                "me908",
+                "mn017",
+                "me032"
+            ]
+        }
+    },
+    "speakers": {
+        "me001": {
+            "name": "me001",
+            "gender": "Male",
+            "english": "native",
+            "education": "Grad",
+            "age": "23"
+        },
+        "fn002": {
+            "name": "fn002",
+            "gender": "Female",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "35"
+        },
+        "me003": {
+            "name": "me003",
+            "gender": "Male",
+            "english": "native",
+            "education": "Grad",
+            "age": "22"
+        },
+        "fe004": {
+            "name": "fe004",
+            "gender": "Female",
+            "english": "native",
+            "education": "Grad",
+            "age": "28"
+        },
+        "mn005": {
+            "name": "mn005",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "35"
+        },
+        "me006": {
+            "name": "me006",
+            "gender": "Male",
+            "english": "native",
+            "education": "Grad",
+            "age": "25"
+        },
+        "mn007": {
+            "name": "mn007",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "28"
+        },
+        "fe008": {
+            "name": "fe008",
+            "gender": "Female",
+            "english": "native",
+            "education": "Postdoc",
+            "age": "unknown"
+        },
+        "mn009": {
+            "name": "mn009",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "Grad",
+            "age": "23"
+        },
+        "me010": {
+            "name": "me010",
+            "gender": "Male",
+            "english": "native",
+            "education": "Professor",
+            "age": "62"
+        },
+        "me011": {
+            "name": "me011",
+            "gender": "Male",
+            "english": "native",
+            "education": "Grad",
+            "age": "35"
+        },
+        "me012": {
+            "name": "me012",
+            "gender": "Male",
+            "english": "native",
+            "education": "Grad",
+            "age": "unknown"
+        },
+        "me013": {
+            "name": "me013",
+            "gender": "Male",
+            "english": "native",
+            "education": "Professor",
+            "age": "51"
+        },
+        "mn014": {
+            "name": "mn014",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "30"
+        },
+        "mn015": {
+            "name": "mn015",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "Grad",
+            "age": "32"
+        },
+        "fe016": {
+            "name": "fe016",
+            "gender": "Female",
+            "english": "native",
+            "education": "PhD",
+            "age": "35"
+        },
+        "mn017": {
+            "name": "mn017",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "36"
+        },
+        "me018": {
+            "name": "me018",
+            "gender": "Male",
+            "english": "native",
+            "education": "PhD",
+            "age": "37"
+        },
+        "mn021": {
+            "name": "mn021",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "36"
+        },
+        "me022": {
+            "name": "me022",
+            "gender": "Male",
+            "english": "native",
+            "education": "PhD",
+            "age": "29"
+        },
+        "me025": {
+            "name": "me025",
+            "gender": "Male",
+            "english": "native",
+            "education": "PhD",
+            "age": "35"
+        },
+        "me026": {
+            "name": "me026",
+            "gender": "Male",
+            "english": "native",
+            "education": "Grad",
+            "age": "23"
+        },
+        "me028": {
+            "name": "me028",
+            "gender": "Male",
+            "english": "native",
+            "education": "Undergrad",
+            "age": "51"
+        },
+        "mn030": {
+            "name": "mn030",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "34"
+        },
+        "me032": {
+            "name": "me032",
+            "gender": "Male",
+            "english": "native",
+            "education": "Professor",
+            "age": "unknown"
+        },
+        "me034": {
+            "name": "me034",
+            "gender": "Male",
+            "english": "native",
+            "education": "PhD",
+            "age": "unknown"
+        },
+        "mn035": {
+            "name": "mn035",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "Grad",
+            "age": "unknown"
+        },
+        "mn036": {
+            "name": "mn036",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "53"
+        },
+        "mn038": {
+            "name": "mn038",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "47"
+        },
+        "mn040": {
+            "name": "mn040",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "unknown"
+        },
+        "fe041": {
+            "name": "fe041",
+            "gender": "Female",
+            "english": "native",
+            "education": "Professor",
+            "age": "42"
+        },
+        "fn043": {
+            "name": "fn043",
+            "gender": "Female",
+            "english": "non-native",
+            "education": "Professor",
+            "age": "31"
+        },
+        "me045": {
+            "name": "me045",
+            "gender": "Male",
+            "english": "native",
+            "education": "Grad",
+            "age": "25"
+        },
+        "fe046": {
+            "name": "fe046",
+            "gender": "Female",
+            "english": "native",
+            "education": "Undergrad",
+            "age": "24"
+        },
+        "mn047": {
+            "name": "mn047",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "Grad",
+            "age": "30"
+        },
+        "mn048": {
+            "name": "mn048",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "37"
+        },
+        "mn049": {
+            "name": "mn049",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "Professor",
+            "age": "55"
+        },
+        "fn050": {
+            "name": "fn050",
+            "gender": "Female",
+            "english": "non-native",
+            "education": "Grad",
+            "age": "20"
+        },
+        "me051": {
+            "name": "me051",
+            "gender": "Male",
+            "english": "native",
+            "education": "Grad",
+            "age": "23"
+        },
+        "mn052": {
+            "name": "mn052",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "unknown"
+        },
+        "me055": {
+            "name": "me055",
+            "gender": "Male",
+            "english": "native",
+            "education": "PhD",
+            "age": "33"
+        },
+        "me056": {
+            "name": "me056",
+            "gender": "Male",
+            "english": "native",
+            "education": "Grad",
+            "age": "35"
+        },
+        "mn057": {
+            "name": "mn057",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "33"
+        },
+        "mn058": {
+            "name": "mn058",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "Professor",
+            "age": "43"
+        },
+        "mn059": {
+            "name": "mn059",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "Grad",
+            "age": "29"
+        },
+        "fe066": {
+            "name": "fe066",
+            "gender": "Female",
+            "english": "native",
+            "education": "Undergrad",
+            "age": "22"
+        },
+        "fe067": {
+            "name": "fe067",
+            "gender": "Female",
+            "english": "native",
+            "education": "Undergrad",
+            "age": "22"
+        },
+        "fe068": {
+            "name": "fe068",
+            "gender": "Female",
+            "english": "native",
+            "education": "Grad",
+            "age": "29"
+        },
+        "fe069": {
+            "name": "fe069",
+            "gender": "Female",
+            "english": "native",
+            "education": "Undergrad",
+            "age": "22"
+        },
+        "me070": {
+            "name": "me070",
+            "gender": "Male",
+            "english": "native",
+            "education": "Undergrad",
+            "age": "23"
+        },
+        "mn081": {
+            "name": "mn081",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "Grad",
+            "age": "32"
+        },
+        "mn082": {
+            "name": "mn082",
+            "gender": "Male",
+            "english": "non-native",
+            "education": "Grad",
+            "age": "44"
+        },
+        "fn083": {
+            "name": "fn083",
+            "gender": "Female",
+            "english": "non-native",
+            "education": "PhD",
+            "age": "unknown"
+        },
+        "fe901": {
+            "name": "fe901",
+            "gender": "female",
+            "english": "native",
+            "education": "unknown",
+            "age": "unknown"
+        },
+        "xe902": {
+            "name": "xe902",
+            "gender": "unknown",
+            "english": "native",
+            "education": "unknown",
+            "age": "unknown"
+        },
+        "fe903": {
+            "name": "fe903",
+            "gender": "female",
+            "english": "native",
+            "education": "unknown",
+            "age": "unknown"
+        },
+        "me904": {
+            "name": "me904",
+            "gender": "male",
+            "english": "native",
+            "education": "unknown",
+            "age": "unknown"
+        },
+        "fe905": {
+            "name": "fe905",
+            "gender": "female",
+            "english": "native",
+            "education": "unknown",
+            "age": "unknown"
+        },
+        "mn906": {
+            "name": "mn906",
+            "gender": "male",
+            "english": "non-native",
+            "education": "unknown",
+            "age": "unknown"
+        },
+        "me907": {
+            "name": "me907",
+            "gender": "male",
+            "english": "native",
+            "education": "unknown",
+            "age": "unknown"
+        },
+        "me908": {
+            "name": "me908",
+            "gender": "male",
+            "english": "native",
+            "education": "unknown",
+            "age": "unknown"
+        }
+    }
+}

@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170794795-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-170794795-1');
+    </script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="const.js"></script>
+    <script src="transcript.js"></script>
+    <script src="helper.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+
+        const safeColors = ["#8dd3c7", "#bebada", "#fb8072", "#80b1d3", "#fdb462",
+            "#b3de69", "#fccde5", "#bc80bd", "#ccebc5", "#ffed6f", "#ffffb3", "#d9d9d9"];
+
+        const categoryColors = [
+            ['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0', '#225ea8', '#253494', '#081d58'].reverse(),
+            ['#fff7f3', '#fde0dd', '#fcc5c0', '#fa9fb5', '#f768a1', '#dd3497', '#ae017e', '#7a0177', '#49006a'].reverse()
+        ];
+
+        const englishY = {"native":-100, "non-native":100};
+        const genderY = {"female":-100, "unknown":0, "male":100};
+
+        var allSpeakers;
+        var allTopics;
+        var canvasHeight;
+        var folder = "output";
+        var sankeyData;
+        var flowData;
+        var flowBackData;
+        var speakerStats = {};
+        var speakerStatsControls = {};
+        var fileJson;
+        var fileName;
+        var colorTheme = "education";
+        var meetingColors = [];
+        var ratio = 0.3;
+        var showSteps = false;
+        var canvasLevels = [0, 1, 10];
+        var currentLevel = 0;
+        var highlightedSpeaker;
+        var highlightedGenderEnglish;
+        
+
+
+        $(document).ready(function () {
+            autoLoad();
+
+            $("#ckShowstep").change(function () {
+                showSteps = $(this).prop("checked");
+                reload(0);
+            });
+
+        });
+
+        function reload(levelIndex) {
+            $("#canvas_container").empty();
+            $("#sankey_basic").empty();
+            $("#stats_area").empty();
+            currentLevel = levelIndex;
+            targetTopicLevel = canvasLevels[currentLevel];
+            meetingColors = [];
+            loadTranscript();
+        }
+
+        function highlightLevel(){
+            $(".topic_level").removeClass("selected");
+            $(".topic_level[data-value="+currentLevel+"]").addClass("selected");
+        }
+
+        function updateScale(change) {
+            if (change < 0) {
+                if (currentLevel > 0) {
+                    currentLevel -= 1;
+                }
+            }
+
+            if (change > 0) {
+                if (currentLevel < 2) {
+                    currentLevel += 1;
+                }
+            }
+
+            reload(currentLevel);
+        }
+
+        function autoLoad() {
+
+            fileName = getParameterByName("file");
+            colorTheme = getParameterByName("theme");
+            loadJson();
+
+        }
+
+        function loadJson() {
+
+            console.log("================");
+
+            
+
+            $.getJSON(folder + "/meetinginfo.json", function (meetingInfo) {
+                allSpeakers = meetingInfo.speakers;
+
+                $.getJSON(folder + "/" + fileName, function (json) {
+                    fileJson = json;
+                    loadTranscript();
+                });
+
+            });
+
+
+        }
+
+        function removehighlight() {
+            highlightedSpeaker = "";
+            reload(currentLevel);
+        }
+
+        function highlight(i) {
+
+            var speakername = $(i).text();
+
+            if (!highlightedSpeaker || highlightedSpeaker != speakername) {
+                highlightedSpeaker = speakername;
+                reload(currentLevel);
+            }
+
+
+        }
+
+        function toggleHighlight(i){
+            var speakername = $(i).text();
+            highlightedGenderEnglish = "";
+
+            if (!highlightedSpeaker) {
+                highlightedSpeaker = speakername;
+                // console.log("highlight " + speakername);
+                reload(currentLevel);
+            }else{
+                if(highlightedSpeaker != speakername){
+                    highlightedSpeaker = speakername;
+                    // console.log("highlight " + speakername);
+                    reload(currentLevel);
+                }else{
+                    highlightedSpeaker = "";
+                    reload(currentLevel);
+                }
+            }
+        }
+
+        function toggleGenderEnglish(i){
+            var genderEnglishSelected = $(i).attr("data-value");
+            respondGenderEnglish(genderEnglishSelected);
+        }
+
+        function respondGenderEnglish(genderEnglishSelected){
+            
+            highlightedSpeaker="";
+            console.log(genderEnglishSelected+" selected");
+
+            if(!highlightedGenderEnglish){
+                highlightedGenderEnglish = genderEnglishSelected;
+                reload(currentLevel);
+            }else{
+                if(highlightedGenderEnglish != genderEnglishSelected){
+                    highlightedGenderEnglish = genderEnglishSelected;
+                    reload(currentLevel);
+                }else{
+                    highlightedGenderEnglish = "";
+                    reload(currentLevel);
+                }
+            }
+
+        }
+
+        function canvasClick(x, y){
+
+            if(isContained(x, y, speakerStatsControls["female"][0], speakerStatsControls["female"][1], speakerStatsControls["female"][2])){
+                respondGenderEnglish("female");
+            }
+
+            if(isContained(x, y, speakerStatsControls["male"][0], speakerStatsControls["male"][1], speakerStatsControls["male"][2])){
+                respondGenderEnglish("male");
+            }
+
+            if(isContained(x, y, speakerStatsControls["native"][0], speakerStatsControls["native"][1], speakerStatsControls["native"][2])){
+                respondGenderEnglish("native");
+            }
+
+            if(isContained(x, y, speakerStatsControls["non-native"][0], speakerStatsControls["non-native"][1], speakerStatsControls["non-native"][2])){
+                respondGenderEnglish("non-native");
+            }
+
+        }
+
+        // function isContained(x0, y0, x1, y1, d){
+        //     console.log(x0+", "+y0+", "+x1+", "+y1);
+        //     return Math.sqrt((x0-x1)*(x0-x1)+(y0-y1)*(y0-y1))<d;
+        // }
+
+        function loadTranscript() {
+
+            highlightLevel();
+            var targetTopicLevel = canvasLevels[currentLevel];
+            console.log(fileName + " at Level " + targetTopicLevel);
+
+            var transcript = new Transcript(fileJson);
+            // transcript.getinterval();
+
+            var starttime = fileJson.transcript[0].starttime;
+            var endtime = fileJson.transcript[fileJson.transcript.length - 1].endtime;
+            var duration = Math.round((endtime - starttime) / 60);
+            var participants = fileJson.speakers;
+
+            allTopics = transcript.getTopicList(targetTopicLevel);
+            transcript.adjustUtteranceTopic(targetTopicLevel);
+
+
+            $('<div>').attr({
+                id: "info_" + (fileName.replace(".json", "")),
+                class: "meeting_discription"
+            }).appendTo('#meetinginfo_container');
+
+            $('<canvas>').attr({
+                id: "canvas_" + (fileName.replace(".json", ""))
+            }).appendTo('#canvas_container');
+
+            // console.log(folder+"/"+fileName);
+            var infoID = "info_" + (fileName.replace(".json", ""));
+            var canvasID = "canvas_" + (fileName.replace(".json", ""));
+
+            var canvas = document.getElementById(canvasID);
+            $(canvas).on("wheel", function(e){
+                event.preventDefault();
+                updateScale(e.originalEvent.deltaY);
+            });
+
+            $(canvas).click(function(e){
+                    event.preventDefault();
+                    canvasClick(e.originalEvent.pageX-$(this)[0].offsetLeft, e.originalEvent.pageY-$(this)[0].offsetTop);
+                });
+
+            $("#" + infoID).html("<b>File Name:</b> " + fileName.replace(".json", "")
+                + " <a href=\"transcript.html?file=" + fileName + "\">(transcript)</a>"
+                + "; <b>Meeting Duration:</b> " + duration + " Minutes"
+                + "; <b>Participant Count:</b> " + participants.length
+                + "; <b>Topic Count:</b> " + allTopics.length
+                + "; <a href=\"wordflows.html?file=" + fileName + "&theme="+colorTheme+"\">Words</a>"
+                + "<br/>");
+
+
+            var participantList = {};
+            for(var p of participants){
+                participantList[p.name] = allSpeakers[p.name];
+            }
+
+            // console.log(colorTheme);
+            var colorAssignment = assignColors(participantList, colorTheme);
+
+            var speakers = {};
+            $("#" + infoID).append("<p id=\"speakerList_" + infoID + "\"></p>")
+
+            speakerStats = {"male":0, "female":0, "native":0, "non-native":0};
+
+            var mIndex = 0;
+            var fIndex = 0;
+            for (i = 0; i < participants.length; i++) {
+                participants[i].index = i;
+                participants[i].total = participants.length;
+                participants[i].category = participants[i].gender == "Male" ? 0 : 1;
+                // if(participants[i].category==0){
+                //     participants[i].color = getCategoryColor(0, mIndex);
+                //     mIndex++;
+                // }else{
+                //     participants[i].color = getCategoryColor(1, fIndex);
+                //     fIndex++;
+                // }
+
+                participants[i].education = allSpeakers[participants[i].name].education;
+                participants[i].english = allSpeakers[participants[i].name].english;
+                // participants[i].originalObject = allSpeakers[participants[i].name];
+
+                // participants[i].color = getSafeColor(i);
+                // participants[i].color = getThemeColor(participants[i]);
+                participants[i].color = colorAssignment[participants[i].name];
+                speakerStats[participants[i].gender.toLowerCase()]+=1;
+                speakerStats[participants[i].english]+=1;
+                
+
+                speakers[participants[i].name] = participants[i];
+                // console.log(participants[i]);
+                // $("#speakerList_" + infoID).append("<div class=\"speaker_container\" onmouseenter=\"highlight(this)\" onmouseleave=\"removehighlight()\" data-color=\"" + participants[i].color + "\" style=\"background-color:" + participants[i].color + "\">" + participants[i].name + "</div>");
+                $("#speakerList_" + infoID).append("<div class=\"speaker_container\" onclick=\"toggleHighlight(this)\" data-color=\"" + participants[i].color + "\" style=\"background-color:" + participants[i].color + "\">" + participants[i].name + "</div>");
+
+            }
+
+            $("#speakerList_" + infoID).append("<div class=\"speaker_container\" onclick=\"toggleGenderEnglish(this)\" data-value=\"female\" style=\"background-color:" + genderColor["female"] + "\">Highlight Female</div>");
+            $("#speakerList_" + infoID).append("<div class=\"speaker_container\" onclick=\"toggleGenderEnglish(this)\" data-value=\"male\" style=\"background-color:" + genderColor["male"] + "\">Highlight Male</div>");
+            $("#speakerList_" + infoID).append("<div class=\"speaker_container\" onclick=\"toggleGenderEnglish(this)\" data-value=\"native\" style=\"background-color:" + englishColor["native"] + "\">Highlight Native Speaker</div>");
+            $("#speakerList_" + infoID).append("<div class=\"speaker_container\" onclick=\"toggleGenderEnglish(this)\" data-value=\"non-native\" style=\"background-color:" + englishColor["non-native"] + "\">Highlight Non-native Speaker</div>");
+
+            
+
+            
+
+            var topicMap = transcript.getTopicStats();
+            var topicArray = Object.entries(topicMap);
+            var maxDuration = 0;
+            sankeyData = [];
+
+            for (var t of topicArray) {
+                maxDuration = Math.max(maxDuration, t[1].durationTotal);
+                if (transcript.topicList[t[0]]) {
+                    t[1].description = transcript.topicList[t[0]].description;
+                    // console.log(transcript.topicList[t[0]]);
+                }
+
+                var targetDescription = t[1].description;
+
+
+                for (var x of Object.entries(t[1].stats)) {
+                    var timeRounded = Math.round(100 * parseFloat(x[1].duration) / 60) / 100;
+                    sankeyData.push([x[1].speaker, targetDescription, timeRounded]);
+                }
+
+
+            }
+
+            canvasHeight = maxDuration * ratio + 10 * (participants.length + 1) + 100;
+            canvasHeight = Math.max(canvasHeight, participants.length * 40 + 100);
+            // drawSankey();
+
+
+
+            loadTopicBarsNew(speakers, canvas, topicArray);
+
+            // drawFlow(canvas, speakers, "fe008");
+            drawFlow(canvas, speakers);
+            // drawSpeakers(canvas, participants, canvasHeight);
+
+
+        }
+
+        function getThemeColor(speaker){
+
+            var currentColor = getSafeColor(speaker.index);
+            if(colorTheme == "education"){
+
+                var baseColor = educationColor[educationOrder.indexOf(speaker.education.toLowerCase())];
+                if(meetingColors[speaker.education.toLowerCase()]){
+                    meetingColors[speaker.education.toLowerCase()]+=1;
+                }else{
+                    meetingColors[speaker.education.toLowerCase()] = 1;
+                }
+                currentColor = pSBC(-0.2*(meetingColors[speaker.education.toLowerCase()]-1), baseColor, false, true);
+            }
+            
+            if(colorTheme == "gender"){
+                
+                var baseColor = genderColor[speaker.gender.toLowerCase()];
+                if(meetingColors[speaker.gender.toLowerCase()]){
+                    meetingColors[speaker.gender.toLowerCase()]+=1;
+                }else{
+                    meetingColors[speaker.gender.toLowerCase()] = 1;
+                }
+                currentColor = pSBC(-0.2*(meetingColors[speaker.gender.toLowerCase()]-1), baseColor, false, true);
+            }
+            
+            if(colorTheme == "english"){
+
+                var baseColor = englishColor[speaker.english.toLowerCase()];
+                if(meetingColors[speaker.english.toLowerCase()]){
+                    meetingColors[speaker.english.toLowerCase()]+=1;
+                }else{
+                    meetingColors[speaker.english.toLowerCase()] = 1;
+                }
+                currentColor = pSBC(-0.2*(meetingColors[speaker.english.toLowerCase()]-1), baseColor, false, true);
+
+            }
+
+            return currentColor;
+            
+        }
+
+        function drawFlow(canvas, speakers, speaker) {
+
+            var ctx = canvas.getContext("2d");
+
+            
+
+            for (var s of Object.entries(flowData)) {
+
+                if (!speaker || speaker == s[0]) {
+
+                    var speakerColor = speakers[s[0]].color;
+                    var speakerGender = speakers[s[0]].gender.toLowerCase();
+                    var speakerEnglish = speakers[s[0]].english.toLowerCase();
+                    // console.log(speakerGender);
+
+                    if (highlightedSpeaker && highlightedSpeaker != s[0]) {
+                        speakerColor = inactiveColor[0];
+                    }
+
+                    if(highlightedGenderEnglish){
+
+                        if(highlightedGenderEnglish == "female" || highlightedGenderEnglish == "male"){
+                            if(highlightedGenderEnglish != speakerGender){
+                                speakerColor = inactiveColor[0];
+                            }
+                        }
+
+                        if(highlightedGenderEnglish == "native" || highlightedGenderEnglish == "non-native"){
+                            if(highlightedGenderEnglish != speakerEnglish){
+                                speakerColor = inactiveColor[0];
+                            }
+                        }
+                        
+                    }
+
+                    var strongColor = false;
+
+                    if (highlightedSpeaker && highlightedSpeaker == s[0]) {
+                        strongColor = true;
+                    }
+
+                    if(highlightedGenderEnglish){
+
+                        if(highlightedGenderEnglish == "female" || highlightedGenderEnglish == "male"){
+                            if(highlightedGenderEnglish == speakerGender){
+                                strongColor = true;
+                            }
+                        }
+
+                        if(highlightedGenderEnglish == "native" || highlightedGenderEnglish == "non-native"){
+                            if(highlightedGenderEnglish == speakerEnglish){
+                                strongColor = true;
+                            }
+                        }
+
+                    }
+
+                    // console.log(s[0]+": "+flowData[s[0]]);
+
+                    drawPoint(ctx, s[1][6], s[1][7], 5, speakerColor);
+                    printSpeaker(ctx, s[1][6]-15, s[1][7]-10, s[0]);
+                    drawSpline3(ctx, flowData[s[0]], flowBackData[s[0]], 0.5, speakerColor, true, strongColor);
+
+                    if (showSteps) {
+                        // for (var i = 0; i < flowData[s[0]].length; i += 2) {
+                        //     drawPoint(ctx, flowData[s[0]][i], flowData[s[0]][i + 1], 2, speakerColor);
+                        //     drawPoint(ctx, flowBackData[s[0]][i], flowBackData[s[0]][i + 1], 2, speakerColor);
+                        // }
+                        for (var i = 0; i < flowData[s[0]].length; i += 3) {
+                            drawPoint(ctx, flowData[s[0]][i], flowData[s[0]][i + 1], 2, "#ff0000");
+                            drawPoint(ctx, flowBackData[s[0]][i], flowBackData[s[0]][i + 1], 2, "#0000ff");
+                        }
+                    }
+                }
+
+            }
+
+            // var speakerColor = speakers["fe016"].color;
+            // drawSpline(ctx, flowData["fe016"], flowBackData["fe016"], 0.5, speakerColor);
+
+            drawValueGroup(canvas, speakers);
+        }
+
+        function printSpeaker(ctx, x, y, speakerName){
+            ctx.fillText(speakerName, x, y);
+        }
+
+
+        function drawSpeakers(canvas, participants, canvasHeight) {
+
+            var distance = 0.5 * canvasHeight / (participants.length + 1);
+            var topY = canvasHeight * 0.2;
+            var angle = 2 / participants.length;
+            var ctx = canvas.getContext("2d");
+            ctx.save();
+
+
+
+            ctx.lineWidth = 10;
+            ctx.font = "10px Arial";
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "right";
+
+
+            for (var p of participants) {
+                ctx.globalAlpha = 0.5;
+                ctx.strokeStyle = p.color;
+                ctx.fillStyle = p.color;
+
+                ctx.beginPath();
+                if (p.category == 0) {
+                    ctx.arc(50, topY + p.index * (40 + distance), 20, -1.5, -1.5 + Math.PI);
+                    ctx.fillText(p.name, 50, topY + p.index * (40 + distance));
+
+                } else {
+                    ctx.arc(50, topY + p.index * (40 + distance), 20, 1.5, 1.5 + Math.PI);
+                    ctx.fillText(p.name, 70, topY + p.index * (40 + distance));
+                }
+
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.moveTo(70, topY + p.index * (40 + distance));
+                if (p.category == 0) {
+                    ctx.quadraticCurveTo(70, canvasHeight / 2 + 100, 220, canvasHeight / 2 + 100);
+                    ctx.quadraticCurveTo(450, canvasHeight / 2 + 100 + p.index * 30, 450, canvasHeight / 2);
+                } else {
+                    ctx.quadraticCurveTo(220, topY + p.index * (40 + distance), 220, canvasHeight / 2 - 100);
+                    ctx.quadraticCurveTo(450, canvasHeight / 2 - 100 - p.index * 30, 450, canvasHeight / 2);
+                }
+
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+
+            }
+
+            ctx.beginPath();
+            ctx.fillStyle = "#9ecae1";
+            ctx.arc(220, canvasHeight / 2 - 100, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            // ctx.fillText("MALE", 205, canvasHeight/2-130);
+
+            ctx.beginPath();
+            ctx.fillStyle = "#a1d99b";
+            ctx.arc(220, canvasHeight / 2 + 100, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            // ctx.fillText("FEMALE", 205, canvasHeight/2+130);
+
+            // ctx.lineWidth = 1;
+
+            ctx.restore();
+        }
+
+        function loadTopicBars(speakers, canvas, topicArray) {
+
+            flowData = {};
+            flowBackData = {};
+            var width = 5;
+            // $('canvas').attr({
+            //     width: (width+150)*topicArray.length
+            // });
+            var x = 160;
+            var maxHeight = 0;
+            var intervalWidth = 200;
+
+
+            var i = 0;
+            var topicBars = [];
+
+            for (var t of topicArray) {
+
+                var index = t[1].index;
+                var durationTotal = t[1].durationTotal;
+                var totalLength = t[1].length;
+                var stats = t[1].stats;
+
+                var statsArray = Object.entries(stats);
+                statsArray.sort(function (a, b) {
+                    return b[1].duration - a[1].duration;
+                });
+
+                // x += (ratio*durationTotal);
+
+                var y = (canvasHeight - (durationTotal * ratio) - 40) / 2;
+                // var y = 50;
+                var intervalEndY = 2;
+
+                var activeSpeakers = [];
+
+                for (var s of statsArray) {
+                    var speaker = s[1]["speaker"];
+                    activeSpeakers.push(speaker);
+                    var duration = s[1]["duration"];
+                    var topicLength = s[1]["length"];
+                    var sectionHeight = duration * ratio + 4;
+                    // var sectionHeight = 4 + 300* duration/durationTotal;
+                    var speakerColor = speakers[speaker].color;
+
+
+                    if (!flowData[speaker]) {
+
+                        // flowData[speaker] = [60, 50+40*speakers[speaker].index];
+                        // flowBackData[speaker] = [60, 50+40*speakers[speaker].index];
+
+                        flowData[speaker] = [60, (canvasHeight - 40 * speakers[speaker].total) / 2 + 40 * speakers[speaker].index];
+                        flowBackData[speaker] = [60, (canvasHeight - 40 * speakers[speaker].total) / 2 + 40 * speakers[speaker].index];
+
+                        flowData[speaker].push(160, (canvasHeight - 5 * speakers[speaker].total) / 2 + 5 * speakers[speaker].index);
+                        flowBackData[speaker].push(160, (canvasHeight - 5 * speakers[speaker].total) / 2 + 5 * speakers[speaker].index);
+                    }
+
+
+                    // flowData[speaker].push(x+width/2, y);
+                    // flowBackData[speaker].push(x+width/2, y+sectionHeight);
+
+                    flowData[speaker].push(x + intervalWidth / 2 + width / 2, y);
+                    flowBackData[speaker].push(x + intervalWidth / 2 + width / 2, y + sectionHeight);
+
+                    flowData[speaker].push(x + intervalWidth + width, canvasHeight / 2 - intervalEndY);
+                    flowBackData[speaker].push(x + intervalWidth + width, canvasHeight / 2 + intervalEndY);
+
+
+                    topicBars.push([x + intervalWidth / 2, y, sectionHeight, width, speakerColor]);
+
+                    y += (sectionHeight + 5);
+
+                }
+
+                var quietSpeakers = [];
+                for (var s of Object.keys(speakers)) {
+                    if (!activeSpeakers.includes(s)) {
+                        quietSpeakers.push(s);
+                    }
+                }
+
+                if (quietSpeakers.length > 0) {
+                    y += 10;
+                }
+
+                quietSpeakers.sort(function (a, b) {
+                    return speakers[a].index - speakers[b].index;
+                });
+
+                for (var s of quietSpeakers) {
+
+                    if (!flowData[s]) {
+                        // flowData[s] = [60, 50+40*speakers[s].index];
+                        // flowBackData[s] = [60, 50+40*speakers[s].index];
+
+                        flowData[s] = [60, (canvasHeight - 40 * speakers[s].total) / 2 + 40 * speakers[s].index];
+                        flowBackData[s] = [60, (canvasHeight - 40 * speakers[s].total) / 2 + 40 * speakers[s].index];
+
+                        flowData[s].push(160, (canvasHeight - 5 * speakers[s].total) / 2 + 5 * speakers[s].index);
+                        flowBackData[s].push(160, (canvasHeight - 5 * speakers[s].total) / 2 + 5 * speakers[s].index);
+                    }
+
+                    // flowData[s].push(x+width/2, y);
+                    // flowBackData[s].push(x+width/2, y+3);
+
+                    flowData[s].push(x + intervalWidth / 2 + width / 2, y);
+                    flowBackData[s].push(x + intervalWidth / 2 + width / 2, y + 3);
+
+                    flowData[s].push(x + intervalWidth + width, canvasHeight / 2 - 2);
+                    flowBackData[s].push(x + intervalWidth + width, canvasHeight / 2 + 2);
+
+
+                    y += 5;
+                }
+
+                // if(t[1].description){
+                //     printTopicDescription(canvas, index, width, t[1].description);
+                // }
+
+                maxHeight = Math.max(maxHeight, y);
+
+                i++;
+
+                // console.log("topic #"+i+": "+x);
+
+                x += (intervalWidth + width);
+            }
+
+            $(canvas).attr({
+                width: x + 50,
+                height: canvasHeight
+            });
+
+            // $(canvas).click(function(e){
+            //     console.log((e.clientX-$(this).offset().left)+", "+(e.clientY-$(this).offset().top));
+            // });
+
+            for (var b of topicBars) {
+                drawBar(canvas, b[0], b[1], b[2], b[3], b[4]);
+            }
+
+        }
+
+        function loadTopicBarsNew(speakers, canvas, topicArray) {
+
+            flowData = {};
+            flowBackData = {};
+            var width = 5;
+            // $('canvas').attr({
+            //     width: (width+150)*topicArray.length
+            // });
+            var x = 400;
+            var maxHeight = 0;
+            var intervalWidth = 200;
+
+
+
+
+
+
+            var i = 0;
+            var topicBars = [];
+            var topicControls = [];
+
+            for (var t of topicArray) {
+
+                i++;
+                var index = t[1].index;
+                var durationTotal = t[1].durationTotal;
+                var totalLength = t[1].length;
+                var stats = t[1].stats;
+                var topicDescription = t[1].description;
+                var topicID = t[0];
+
+                var statsArray = Object.entries(stats);
+                statsArray.sort(function (a, b) {
+                    return b[1].duration - a[1].duration;
+                });
+
+                // x += (ratio*durationTotal);
+
+                var y = (canvasHeight - (durationTotal * ratio) - 40) / 2;
+                // var y = 50;
+                var intervalEndY = 2;
+
+                var activeSpeakers = [];
+
+                for (var s of statsArray) {
+                    var speaker = s[1]["speaker"];
+                    activeSpeakers.push(speaker);
+                    var duration = s[1]["duration"];
+                    var topicLength = s[1]["length"];
+                    // console.log(topicLength);
+                    var sectionHeight = duration * ratio + 4;
+                    // var sectionHeight = 4 + 300* duration/durationTotal;
+                    var speakerColor = speakers[speaker].color;
+                    // var speakerEnglishY = canvasHeight/2 + englishY[speakers[speaker].english];
+                    // console.log(speaker+" - "+speakers[speaker].english+": "+speakerEnglishY);
+                    // var speakerGenderY = canvasHeight/2 + genderY[speakers[speaker].gender.toLowerCase()];
+                    // console.log(speaker+" - "+speakers[speaker].gender+": "+speakerGenderY);
+
+
+                    if (!flowData[speaker]) {
+
+                        // console.log("Initiating "+speaker);
+
+                        var speakerEnglishY = canvasHeight/2 + englishY[speakers[speaker].english];
+                        // console.log(speaker+" - "+speakers[speaker].english+": "+speakerEnglishY);
+                        var speakerGenderY = canvasHeight/2 + genderY[speakers[speaker].gender.toLowerCase()];
+                        // console.log(speaker+" - "+speakers[speaker].gender+": "+speakerGenderY);
+
+                        // flowData[speaker] = [60, 50+40*speakers[speaker].index];
+                        // flowBackData[speaker] = [60, 50+40*speakers[speaker].index];
+
+                        // flowData[speaker] = [300, (canvasHeight - 40 * speakers[speaker].total) / 2 + 40 * speakers[speaker].index, 0];
+                        // flowBackData[speaker] = [300, (canvasHeight - 40 * speakers[speaker].total) / 2 + 40 * speakers[speaker].index + 3, 0];
+
+                        // flowData[speaker].push(400, (canvasHeight - 5 * speakers[speaker].total) / 2 + 5 * speakers[speaker].index, 0);
+                        // flowBackData[speaker].push(400, (canvasHeight - 5 * speakers[speaker].total) / 2 + 5 * speakers[speaker].index + 3, 0);
+
+                        flowData[speaker] = [100, speakerEnglishY, 0];
+                        flowBackData[speaker] = [100, speakerEnglishY + 3, 0];
+
+                        flowData[speaker].push(200, speakerGenderY, 0);
+                        flowBackData[speaker].push(200, speakerGenderY + 3, 0);
+
+                        flowData[speaker].push(300, (canvasHeight - 40 * speakers[speaker].total) / 2 + 40 * speakers[speaker].index, 0);
+                        flowBackData[speaker].push(300, (canvasHeight - 40 * speakers[speaker].total) / 2 + 40 * speakers[speaker].index + 3, 0);
+
+                        flowData[speaker].push(400, (canvasHeight - 5 * speakers[speaker].total) / 2 + 5 * speakers[speaker].index, 0);
+                        flowBackData[speaker].push(400, (canvasHeight - 5 * speakers[speaker].total) / 2 + 5 * speakers[speaker].index + 3, 0);
+
+                        // console.log(speaker +" has "+ flowData[speaker]);
+                    }
+
+                    
+                    flowData[speaker].push(x + intervalWidth + width / 2, y, topicLength);
+                    flowBackData[speaker].push(x + intervalWidth + width / 2, y + sectionHeight, topicLength);
+
+                    if (i == topicArray.length) {
+
+                        flowData[speaker].push(x + intervalWidth + width + 0.5*intervalWidth, canvasHeight / 2 - intervalEndY, topicLength);
+                        flowBackData[speaker].push(x + intervalWidth + width+ 0.5*intervalWidth, canvasHeight / 2 + intervalEndY, topicLength);
+                    }
+
+                    topicBars.push([x + intervalWidth, y, sectionHeight, width, speakerColor]);
+
+
+                    y += (sectionHeight + 5);
+
+                }
+
+
+
+                var quietSpeakers = [];
+                for (var s of Object.keys(speakers)) {
+                    if (!activeSpeakers.includes(s)) {
+                        quietSpeakers.push(s);
+                    }
+                }
+
+                if (quietSpeakers.length > 0) {
+                    y += 10;
+                }
+
+                quietSpeakers.sort(function (a, b) {
+                    return speakers[a].index - speakers[b].index;
+                });
+
+                for (var s of quietSpeakers) {
+
+                    if (!flowData[s]) {
+                        // flowData[s] = [60, 50+40*speakers[s].index];
+                        // flowBackData[s] = [60, 50+40*speakers[s].index];
+
+                        // flowData[s] = [300, (canvasHeight - 40 * speakers[s].total) / 2 + 40 * speakers[s].index, 0];
+                        // flowBackData[s] = [300, (canvasHeight - 40 * speakers[s].total) / 2 + 40 * speakers[s].index + 3, 0];
+
+                        // flowData[s].push(400, (canvasHeight - 5 * speakers[s].total) / 2 + 5 * speakers[s].index, 0);
+                        // flowBackData[s].push(400, (canvasHeight - 5 * speakers[s].total) / 2 + 5 * speakers[s].index + 3, 0);
+
+                        var speakerEnglishY = canvasHeight/2 + englishY[speakers[s].english];
+                        // console.log(speaker+" - "+speakers[speaker].english+": "+speakerEnglishY);
+                        var speakerGenderY = canvasHeight/2 + genderY[speakers[s].gender.toLowerCase()];
+                        // console.log(s+" - "+speakers[s].gender+": "+speakerGenderY);
+
+                        flowData[s] = [100, speakerEnglishY, 0];
+                        flowBackData[s] = [100, speakerEnglishY + 3, 0];
+
+                        flowData[s].push(200, speakerGenderY, 0);
+                        flowBackData[s].push(200, speakerGenderY + 3, 0);
+
+                        flowData[s].push(300, (canvasHeight - 40 * speakers[s].total) / 2 + 40 * speakers[s].index, 0);
+                        flowBackData[s].push(300, (canvasHeight - 40 * speakers[s].total) / 2 + 40 * speakers[s].index + 3, 0);
+
+                        flowData[s].push(400, (canvasHeight - 5 * speakers[s].total) / 2 + 5 * speakers[s].index, 0);
+                        flowBackData[s].push(400, (canvasHeight - 5 * speakers[s].total) / 2 + 5 * speakers[s].index + 3, 0);
+
+                        // console.log(s+" has "+flowData[s]);
+                    }
+
+                    // flowData[s].push(x+width/2, y);
+                    // flowBackData[s].push(x+width/2, y+3);
+
+                    flowData[s].push(x + intervalWidth + width / 2, y, 0);
+                    flowBackData[s].push(x + intervalWidth + width / 2, y + 3, 0);
+
+                    if (i == topicArray.length) {
+                        flowData[s].push(x + intervalWidth + width + 0.5*intervalWidth, canvasHeight / 2 - 2, 0);
+                        flowBackData[s].push(x + intervalWidth + width + 0.5*intervalWidth, canvasHeight / 2 + 2, 0);
+                    }
+
+                    y += 5;
+                }
+
+                // if(t[1].description){
+                //     printTopicDescription(canvas, index, width, t[1].description);
+                // }
+
+                topicControls.push([x + intervalWidth/2, canvasHeight - 10, 5, intervalWidth + width, speakerColor, topicDescription, topicID]);
+
+
+                maxHeight = Math.max(maxHeight, y);
+
+
+                // console.log("topic #"+i+": "+x);
+
+                x += (intervalWidth + width);
+            }
+
+            var topicBarLevel = 0;
+            var topicLookup = {};
+
+            for(var t of allTopics){
+                topicLookup[t.id] = t;
+                topicBarLevel = Math.max(topicBarLevel, t.level);
+            }
+
+
+            $(canvas).attr({
+                width: x + intervalWidth,
+                height: canvasHeight + 100 + 50*topicBarLevel
+            });
+
+            // $(canvas).click(function(e){
+            //     console.log((e.clientX-$(this).offset().left)+", "+(e.clientY-$(this).offset().top));
+            // });
+
+            for (var b of topicBars) {
+                drawBar(canvas, b[0], b[1], b[2], b[3], "#aaa");
+            }
+
+            // var ctx = canvas.getContext("2d");
+            // drawPoint(ctx, 200, canvasHeight/2+genderY["female"], 10, genderColor["female"]);
+            // printText(ctx, 180, canvasHeight/2+genderY["female"]+25, 40, "Female", 15);
+
+            // drawPoint(ctx, 200, canvasHeight/2+genderY["male"], 10, genderColor["male"]);
+            // printText(ctx, 180, canvasHeight/2+genderY["male"]+25, 40, "male", 15);
+
+            // drawPoint(ctx, 100, canvasHeight/2+englishY["native"], 10, englishColor["native"]);
+            // printText(ctx, 80, canvasHeight/2+englishY["native"]+25, 40, "native", 15);
+
+            // drawPoint(ctx, 100, canvasHeight/2+englishY["non-native"], 10, englishColor["non-native"]);
+            // printText(ctx, 80, canvasHeight/2+englishY["non-native"]+25, 40, "non-native", 15);
+            
+
+
+
+            var topicRendered = {};
+
+            for (var b of topicControls) {
+                
+                var x = b[0];
+                var y = b[1];
+                var height = b[2];
+                var width = b[3];
+                var description = b[5];
+                var topicID = b[6];
+
+                var topic = topicLookup[topicID];
+            
+                while(topic != null){
+                    if(topicRendered[topic.level]){
+                        topicRendered[topic.level].push([{"id":topic.id, "x":x, "y":y+(topic.level * 50), "width":width, "description":topic.description}]);
+                    }else{
+                        topicRendered[topic.level] = [{"id":topic.id, "x":x, "y":y+(topic.level * 50), "width":width, "description":topic.description}];
+                    }
+                    
+                    topic = topicLookup[topic.parent];
+                }
+            }
+
+            var topicRenderedArray = Object.entries(topicRendered);
+            
+            for(var ta of topicRenderedArray){
+                
+                var currentLevel = ta[0];
+                var currentTopics = ta[1];
+                
+                currentTopics.sort(function(a,b){
+                    return a.x - b.x;
+                });
+
+
+                var combined = [currentTopics[0]];
+                
+                for(var x=1; x<currentTopics.length; x++){
+                    if(combined[combined.length-1].id == currentTopics[x][0].id){
+                        combined[combined.length-1].width += currentTopics[x][0].width;
+                    }else{
+                        combined.push(currentTopics[x][0]);
+                    }
+                }
+
+                // console.log(combined);
+                for(var c of combined){
+                    // console.log(c);
+                    drawBar(canvas, c.x, c.y, 5, c.width-10, "#4d4d4d");
+                    printTopicDescription(canvas, c.x, c.y + 25, c.width-10, c.description);
+                }
+                            
+            }
+
+
+            // drawBar(canvas, x, y+(topic.level * 50), height, width, "#000");
+            // printTopicDescription(canvas, x, y+(topic.level * 50) + 20, topic.description);
+
+        }
+
+        function printTopicDescription(canvas, x, y, width, topicDescription) {
+
+            var maxWidth = width;
+            var lineHeight = 22;
+            var ctx = canvas.getContext("2d");
+            ctx.save();
+
+            // ctx.font = "20px RobotoRegular";
+            ctx.font = "15px RobotoRegular";
+            ctx.fillStyle = "#000";
+
+            topicDescription = capitalizeSentence(topicDescription);
+            var words = topicDescription.split(' ');
+            var line = '';
+
+            for (var n = 0; n < words.length; n++) {
+                var testLine = line + words[n] + ' ';
+                var metrics = ctx.measureText(testLine);
+                var testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    ctx.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                }
+                else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line, x, y);
+
+            ctx.restore();
+        }
+
+        function drawBar(canvas, x, y, height, width, speakerColor) {
+
+            var ctx = canvas.getContext("2d");
+            ctx.globalCompositeOperation = "destination-over";
+            ctx.fillStyle = speakerColor;
+            ctx.fillRect(x, y, (width), height);
+
+        }
+
+        function drawValueGroup(canvas, speakers){
+
+            var ctx = canvas.getContext("2d");
+
+            var genderMaleColor = inactiveColor[2];
+            var genderFemaleColor = inactiveColor[2];
+            var englishNativeColor = inactiveColor[2];
+            var englishNonnativeColor = inactiveColor[2];
+
+
+            if(highlightedGenderEnglish){
+
+                if(highlightedGenderEnglish == "female"){
+                    genderFemaleColor = genderColor["female"];
+                }
+
+                if(highlightedGenderEnglish == "male"){
+                    genderMaleColor = genderColor["male"];
+                }
+
+                if(highlightedGenderEnglish == "native"){
+                    englishNativeColor = englishColor["native"];
+                }
+
+                if(highlightedGenderEnglish == "non-native"){
+                    englishNonnativeColor = englishColor["non-native"];
+                }
+
+            }
+
+            if (highlightedSpeaker) {
+                var highlightedSpeakerGender = speakers[highlightedSpeaker].gender.toLowerCase();
+                var highlightedSpeakerEnglish = speakers[highlightedSpeaker].english.toLowerCase();
+
+                // console.log(highlightedSpeaker+": "+highlightedSpeakerGender+", "+highlightedSpeakerEnglish);
+
+                if(highlightedSpeakerGender == "male"){
+                    genderMaleColor = genderColor["male"];
+                }
+
+                if(highlightedSpeakerGender == "female"){
+                    genderFemaleColor = genderColor["female"];
+                }
+
+                if(highlightedSpeakerEnglish == "native"){
+                    englishNativeColor = englishColor["native"];
+                }
+
+                if(highlightedSpeakerEnglish == "non-native"){
+                    englishNonnativeColor = englishColor["non-native"];
+                }
+                
+            }
+
+            speakerStatsControls["female"] = [200, canvasHeight/2+genderY["female"], 5+(speakerStats["female"])];
+            speakerStatsControls["male"] = [200, canvasHeight/2+genderY["male"], 5+(speakerStats["male"])];
+            speakerStatsControls["native"] = [100, canvasHeight/2+englishY["native"], 5+(speakerStats["native"])];
+            speakerStatsControls["non-native"] = [100, canvasHeight/2+englishY["non-native"], 5+(speakerStats["non-native"])];
+
+            drawPoint(ctx, 200, canvasHeight/2+genderY["female"], 5+(speakerStats["female"]), genderFemaleColor);
+            printText(ctx, 180, canvasHeight/2+genderY["female"]+25+speakerStats["female"], 40, "Female", 15);
+
+            drawPoint(ctx, 200, canvasHeight/2+genderY["male"], 5+(speakerStats["male"]), genderMaleColor);
+            printText(ctx, 180, canvasHeight/2+genderY["male"]+25+speakerStats["male"], 40, "male", 15);
+
+            drawPoint(ctx, 100, canvasHeight/2+englishY["native"], 5+(speakerStats["native"]), englishNativeColor);
+            printText(ctx, 80, canvasHeight/2+englishY["native"]+25+speakerStats["native"], 40, "native", 15);
+
+            drawPoint(ctx, 100, canvasHeight/2+englishY["non-native"], 5+(speakerStats["non-native"]), englishNonnativeColor);
+            printText(ctx, 80, canvasHeight/2+englishY["non-native"]+25+speakerStats["non-native"], 40, "non-native", 15);
+
+        }
+
+        // function drawValueGroup(canvas, x, canvasHeight, groupValue){
+
+        //     var ctx = canvas.getContext("2d");
+
+        //     var valueArray = Object.entries(groupValue);
+            
+
+        //     if(valueArray.length == 2){
+        //         drawPoint(ctx, x, canvasHeight/2+valueArray[0][1], 10, englishColor[valueArray[0][0]]);
+        //         printText(canvas, x-20, canvasHeight/2+valueArray[0][1]+25, 40, valueArray[0][0], 15);
+
+        //         drawPoint(ctx, x, canvasHeight/2+valueArray[1][1], 10, englishColor[valueArray[1][0]]);
+        //         printText(canvas, x-20, canvasHeight/2+valueArray[1][1]+25, 40, valueArray[1][0], 15);
+        //     }
+
+        //     if(valueArray.length == 3){
+        //         drawPoint(ctx, x, canvasHeight/2+valueArray[0][1], 10, genderColor[valueArray[0][0]]);
+        //         printText(canvas, x-20, canvasHeight/2+valueArray[0][1]+25, 40, valueArray[0][0], 15);
+
+        //         drawPoint(ctx, x, canvasHeight/2+valueArray[1][1], 10, genderColor[valueArray[1][0]]);
+        //         printText(canvas, x-20, canvasHeight/2+valueArray[1][1]+25, 40, valueArray[1][0], 15);
+
+        //         drawPoint(ctx, x, canvasHeight/2+valueArray[2][1], 10, genderColor[valueArray[2][0]]);
+        //         printText(canvas, x-20, canvasHeight/2+valueArray[2][1]+25, 40, valueArray[2][0], 15);
+        //     }
+        // }
+
+        function getEndPosition(x, y, height, width) {
+
+            var newPos = {};
+            newPos.topX = x + width;
+            newPos.topY = y;
+            newPos.bottomX = x + width;
+            newPos.bottomY = y + height;
+
+            return newPos;
+
+        }
+
+        function interpretName(name) {
+            var gender = name.substring(0, 1) === "m" ? "Male" : "Female";
+            var language = name.substring(1, 2) === "e" ? "Native" : "Non-Native";
+
+            return gender + "/" + language;
+        }
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+
+            do {
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+            }
+            while (safeColors.includes(color));
+
+            return color;
+        }
+
+        function getSafeColor(index) {
+
+            if (index > 11) {
+                // return "#000000";
+                return getRandomColor();
+            } else {
+                return safeColors[index];
+            }
+        }
+
+        function getCategoryColor(category, index) {
+            if (category > 1 || index > 8) {
+                // return "#000000";
+                return getRandomColor();
+            } else {
+                return categoryColors[category][index];
+            }
+        }
+
+        function drawSankey() {
+            google.charts.load('current', { 'packages': ['sankey'] });
+            google.charts.setOnLoadCallback(drawChart);
+        }
+
+        function drawChart() {
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Speaker');
+            data.addColumn('string', 'Topic');
+            data.addColumn('number', 'Time');
+
+            // data.addRows([
+            //     [ 'A', 'X', 5 ],
+            //     [ 'A', 'Y', 7 ],
+            //     [ 'A', 'Z', 6 ],
+            //     [ 'B', 'X', 2 ],
+            //     [ 'B', 'Y', 9 ],
+            //     [ 'B', 'Z', 4 ]
+            // ]);
+
+            data.addRows(sankeyData);
+
+            // for(var d of sankeyData){
+            //     console.log(d);
+
+            //     data.addRow([d[0], d[1], d[2]]);
+            // }
+
+
+            // Sets chart options.
+            var options = {
+                width: "80%",
+                sankey: {
+                    node: {
+                        colors: safeColors
+                    },
+                    link: {
+                        colorMode: 'gradient',
+                        colors: safeColors
+                    }
+                }
+            };
+
+            var chart = new google.visualization.Sankey(document.getElementById('sankey_basic'));
+            chart.draw(data, options);
+        }
+
+    </script>
+    <style>
+        @font-face {
+            font-family: 'RobotoThin';
+            src: url('style/Roboto/Roboto-Thin.ttf');
+        }
+        @font-face {
+            font-family: 'RobotoRegular';
+            src: url('style/Roboto/Roboto-Regular.ttf');
+        }
+        body{
+            font-family: RobotoThin, Helvetica, sans-serif;
+        }
+        button{
+            font-family: RobotoRegular, Helvetica, sans-serif;
+        }
+        #canvas_container {
+            padding: 10px 0;
+            width: 100%;
+            overflow: scroll;
+            text-align: center;
+        }
+
+        #canvas_container canvas {
+            padding: 0px;
+            margin: 0px;
+            border: 1px solid #aaa;
+        }
+        .topic_level.selected{
+            background-color: #376AAD;
+            color: #ffffff;
+        }
+
+        .meeting_discription {
+            width: 100%;
+            margin: 50px 5px 10px;
+        }
+
+        .speaker_row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .speaker_container {
+            float: left;
+            padding: 5px 10px;
+            margin: 5px 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+    <p>
+        <button onclick="reload(0)" data-value="0" class="topic_level">Top Level Topic Only</button>
+        <button onclick="reload(1)" data-value="1" class="topic_level">Top Level Topic and Children</button>
+        <button onclick="reload(2)" data-value="2" class="topic_level">All Topics</button>
+        <input id="ckShowstep" type="checkbox"><label for="ckShowstep">Show Step Data</label>
+    </p>
+    <div id="meetinginfo_container"></div>
+    <div id="canvas_container"></div>
+    <div id="sankey_basic" style="width: 90%; height: 600px;margin:40px 20px"></div>
+    <div id="stats_area"></div>
+</body>
+
+</html>

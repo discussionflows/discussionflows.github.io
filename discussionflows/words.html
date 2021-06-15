@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170794795-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-170794795-1');
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="const.js"></script>
+    <script src="transcript.js"></script>
+    <script src="helper.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+
+        const safeColors = ["#8dd3c7", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9", "#bc80bd", "#ccebc5", "#ffed6f", "#ffffb3"];
+
+        // const safeColors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"];
+        //    const mColors = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58'];
+        //    const fColors = ['#fff7f3','#fde0dd','#fcc5c0','#fa9fb5','#f768a1','#dd3497','#ae017e','#7a0177','#49006a'];
+        const categoryColors = [
+            ['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0', '#225ea8', '#253494', '#081d58'].reverse(),
+            ['#fff7f3', '#fde0dd', '#fcc5c0', '#fa9fb5', '#f768a1', '#dd3497', '#ae017e', '#7a0177', '#49006a'].reverse()
+        ];
+
+        const intervalSizes = [10, 30, 60, 150, 300];
+        const englishY = { "native": -100, "non-native": 100 };
+        const genderY = { "female": -100, "unknown": 0, "male": 100 };
+
+        var canvasWidth = window.innerWidth - 40;
+        var canvasHeight = window.innerHeight - 300;
+        var folder = "output";
+        var sankeyData;
+        var flowData;
+        var flowBackData;
+        var maxTopicLevel = 0;
+        var targetTopicLevel = 5;
+        var fileJson;
+        var fileName;
+        var colorTheme;
+        var showSteps = false;
+        var intervalSize = 300;
+        var highlightedSpeaker;
+        var highlightedGenderEnglish;
+        var speakerStatsControls = {};
+        var speakerStats = {};
+
+        var allSpeakers;
+
+        $(document).ready(function () {
+            autoLoad();
+
+            $("#ckShowstep").change(function () {
+                showSteps = $(this).prop("checked");
+                reload(intervalSize);
+            });
+
+        });
+
+        function reload(stepsize) {
+            $("#canvas_container").empty();
+            maxTopicLevel = 0;
+            intervalSize = stepsize;
+            loadTranscript();
+        }
+
+        function autoLoad() {
+
+            fileName = getParameterByName("file");
+            colorTheme = getParameterByName("theme");
+            loadJson();
+
+        }
+
+        function loadJson() {
+
+            console.log("================");
+
+
+            $.getJSON(folder + "/meetinginfo.json", function (meetingInfo) {
+                allSpeakers = meetingInfo.speakers;
+
+                $.getJSON(folder + "/" + fileName, function (json) {
+                    fileJson = json;
+                    loadTranscript();
+                });
+
+            });
+
+
+        }
+
+        function highlightInterval(){
+            $(".word_interval").removeClass("selected");
+            $(".word_interval[data-value="+intervalSize+"]").addClass("selected");
+        }
+
+        function updateScale(change) {
+            
+            var intervalIndex = intervalSizes.indexOf(intervalSize);
+            if (change < 0) {
+                if (intervalIndex > 0) {
+                    intervalSize = intervalSizes[intervalIndex-1];
+                }
+            }
+
+            if (change > 0) {
+                if (intervalIndex < 4) {
+                    intervalSize = intervalSizes[intervalIndex+1];
+                }
+            }
+
+            reload(intervalSize);
+        }
+
+        function canvasClick(x, y) {
+
+            if (isContained(x, y, speakerStatsControls["female"][0], speakerStatsControls["female"][1], speakerStatsControls["female"][2])) {
+                respondGenderEnglish("female");
+            }
+
+            if (isContained(x, y, speakerStatsControls["male"][0], speakerStatsControls["male"][1], speakerStatsControls["male"][2])) {
+                respondGenderEnglish("male");
+            }
+
+            if (isContained(x, y, speakerStatsControls["native"][0], speakerStatsControls["native"][1], speakerStatsControls["native"][2])) {
+                respondGenderEnglish("native");
+            }
+
+            if (isContained(x, y, speakerStatsControls["non-native"][0], speakerStatsControls["non-native"][1], speakerStatsControls["non-native"][2])) {
+                respondGenderEnglish("non-native");
+            }
+
+        }
+
+        function respondGenderEnglish(genderEnglishSelected) {
+
+            highlightedSpeaker = "";
+            // console.log(genderEnglishSelected + " selected");
+
+            if (!highlightedGenderEnglish) {
+                highlightedGenderEnglish = genderEnglishSelected;
+                reload(intervalSize);
+            } else {
+                if (highlightedGenderEnglish != genderEnglishSelected) {
+                    highlightedGenderEnglish = genderEnglishSelected;
+                    reload(intervalSize);
+                } else {
+                    highlightedGenderEnglish = "";
+                    reload(intervalSize);
+                }
+            }
+
+        }
+
+        function toggleHighlight(i){
+            var speakername = $(i).text();
+            highlightedGenderEnglish = "";
+
+            if (!highlightedSpeaker) {
+                highlightedSpeaker = speakername;
+                // console.log("highlight " + speakername);
+                reload(intervalSize);
+            }else{
+                if(highlightedSpeaker != speakername){
+                    highlightedSpeaker = speakername;
+                    // console.log("highlight " + speakername);
+                    reload(intervalSize);
+                }else{
+                    highlightedSpeaker = "";
+                    reload(intervalSize);
+                }
+            }
+        }
+
+        function loadTranscript() {
+
+            console.log(fileName + " with step of " + intervalSize + " seconds");
+            highlightInterval();
+
+            var transcript = new Transcript(fileJson);
+            var starttime = transcript.starttime;
+            var endtime = transcript.endtime;
+            var duration = endtime - starttime;
+            var durationMin = Math.ceil(duration / 60);
+            transcript.allWords = transcript.getAllwords();
+
+            var topicTimeline = transcript.getTopicTimeline();
+
+            for (var t of topicTimeline) {
+                maxTopicLevel = Math.max(maxTopicLevel, transcript.topicList[t.id].level);
+            }
+
+            var topics = transcript.getTopicList(targetTopicLevel);
+            transcript.adjustUtteranceTopic(targetTopicLevel);
+
+            var participants = fileJson.speakers;
+            transcript.participants = participants;
+
+            $('<div>').attr({
+                id: "info_" + (fileName.replace(".json", "")),
+                class: "meeting_discription"
+            }).appendTo('#meetinginfo_container');
+
+            $('<canvas>').attr({
+                id: "canvas_" + (fileName.replace(".json", ""))
+            }).appendTo('#canvas_container');
+
+
+            // console.log(folder+"/"+fileName);
+            var infoID = "info_" + (fileName.replace(".json", ""));
+            var canvasID = "canvas_" + (fileName.replace(".json", ""));
+
+            var canvas = document.getElementById(canvasID);
+
+            $(canvas).on("wheel", function(e){
+                event.preventDefault();
+                updateScale(e.originalEvent.deltaY);
+            });
+
+            $(canvas).click(function (e) {
+                event.preventDefault();
+                canvasClick(e.originalEvent.pageX - $(this)[0].offsetLeft, e.originalEvent.pageY - $(this)[0].offsetTop);
+            });
+
+            $("#" + infoID).html("<b>File Name:</b> " + fileName.replace(".json", "")
+                + "; <b>Meeting Duration:</b> " + durationMin + " Minutes"
+                + "; <b>Participant Count:</b> " + participants.length
+                + "; <b>Topic Count:</b> " + topics.length
+                + "<br/>");
+
+
+            var participantList = {};
+            for (var p of participants) {
+                participantList[p.name] = allSpeakers[p.name];
+            }
+            var colorAssignment = assignColors(participantList, colorTheme);
+
+            var speakers = {};
+            speakerStats = { "male": 0, "female": 0, "native": 0, "non-native": 0 };
+
+            $("#" + infoID).append("<p id=\"speakerList_" + infoID + "\"></p>")
+
+            for (i = 0; i < participants.length; i++) {
+                participants[i].index = i;
+                participants[i].total = participants.length;
+                participants[i].category = participants[i].gender == "Male" ? 0 : 1;
+                participants[i].education = allSpeakers[participants[i].name].education;
+                participants[i].english = allSpeakers[participants[i].name].english;
+                // participants[i].color = getSafeColor(i);
+                participants[i].color = colorAssignment[participants[i].name];
+                speakerStats[participants[i].gender.toLowerCase()] += 1;
+                speakerStats[participants[i].english] += 1;
+
+                speakers[participants[i].name] = participants[i];
+                speakers[participants[i].name].previousPosition = { "topX": 60, "topY": canvasHeight / 2, "bottomX": 60, "bottomY": canvasHeight / 2 };
+                $("#speakerList_" + infoID).append("<div class=\"speaker_container\" onclick=\"toggleHighlight(this)\" data-color=\"" + participants[i].color + "\" style=\"background-color:" + participants[i].color + "\">" + participants[i].name + "</div>");
+
+            }
+
+            transcript.speakers = speakers;
+
+
+            loadFlow(canvas, transcript);
+
+            drawFlow(canvas, speakers);
+
+            drawValueGroup(canvas, speakers);
+
+            drawTopic(canvas, transcript.topicList, topicTimeline);
+
+        }
+
+        function loadFlow(canvas, transcript) {
+
+            var step = Math.ceil(transcript.endtime / intervalSize);
+            var maxWords = 0;
+            var intervalSet = [];
+
+
+            for (var i = 0; i < step; i++) {
+                var words = transcript.getWordsByTime(transcript.allWords, i * intervalSize, intervalSize * (i + 1));
+                // console.log(i*intervalSize/60+": "+words.length);
+
+                maxWords = Math.max(maxWords, words.length);
+
+                var wordsBySpeaker = {};
+
+                for (var w of words) {
+                    if (wordsBySpeaker[w.speaker]) {
+                        wordsBySpeaker[w.speaker] += 1;
+                    } else {
+                        wordsBySpeaker[w.speaker] = 1;
+                    }
+
+                }
+
+                var statsActive = Object.entries(wordsBySpeaker);
+
+                statsActive.sort(function (a, b) { return b[1] - a[1] });
+
+
+                var activeSpeakers = Object.keys(wordsBySpeaker);
+                var quietSpeakers = [];
+                for (var s of transcript.participants) {
+                    if (!activeSpeakers.includes(s.name)) {
+                        quietSpeakers.push(s);
+                    }
+                }
+
+                quietSpeakers.sort(function (a, b) { return a.index - b.index; });
+
+                var statsQuiet = [];
+                for (var s of quietSpeakers) {
+                    statsQuiet.push([s.name, 0]);
+                }
+
+                intervalSet.push({ "length": words.length, "active": statsActive, "quiet": statsQuiet });
+                // console.log(wordsBySpeakerArray);
+                // console.log(activeSpeakers);
+                // console.log(quietSpeakers);
+            }
+
+            // console.log(intervalSet);
+            // console.log(maxWords);
+
+            var intervalMaxHeight = 300;
+            var ratioV = intervalMaxHeight / maxWords;
+            var markerWidth = 300;
+            var intervalWidth = markerWidth * intervalSize / 300;
+            canvasWidth = 400 + intervalWidth * (step) + 100;
+            canvasHeight = intervalMaxHeight + 200;
+            var speakerlistTopY = (canvasHeight - transcript.participants.length * 40) / 2;
+            var markerTopY = (canvasHeight - intervalMaxHeight) / 2;
+            var markerBottomY = markerTopY + intervalMaxHeight;
+
+
+
+
+
+            flowData = {};
+            flowBackData = {};
+
+            for (var i = 0; i < step; i++) {
+
+                var arr = intervalSet[i];
+                var x = 400 + intervalWidth * (i + 1);
+                var y = (markerBottomY - arr.length * ratioV - 4 * arr.active.length);
+
+
+                for (var a of arr.active) {
+
+                    if (!flowData[a[0]]) {
+
+                        var speakerEnglishY = canvasHeight / 2 + englishY[transcript.speakers[a[0]].english];
+                        // console.log(speaker+" - "+speakers[speaker].english+": "+speakerEnglishY);
+                        var speakerGenderY = canvasHeight / 2 + genderY[transcript.speakers[a[0]].gender.toLowerCase()];
+                        // console.log(speaker+" - "+speakers[speaker].gender+": "+speakerGenderY);
+
+                        flowData[a[0]] = [100, speakerEnglishY];
+                        flowBackData[a[0]] = [100, speakerEnglishY + 3];
+
+                        flowData[a[0]].push(200, speakerGenderY);
+                        flowBackData[a[0]].push(200, speakerGenderY + 3);
+
+                        flowData[a[0]].push(300, speakerlistTopY + 40 * transcript.speakers[a[0]].index);
+                        flowBackData[a[0]].push(300, speakerlistTopY + 40 * transcript.speakers[a[0]].index + 3);
+
+                        flowData[a[0]].push(400, (canvasHeight - 5 * transcript.speakers[a[0]].total) / 2 + 5 * transcript.speakers[a[0]].index);
+                        flowBackData[a[0]].push(400, (canvasHeight - 5 * transcript.speakers[a[0]].total) / 2 + 5 * transcript.speakers[a[0]].index + 3);
+
+
+                    }
+
+                    flowData[a[0]].push(x, y);
+                    y += (ratioV * a[1] + 4);
+                    flowBackData[a[0]].push(x, y);
+
+                }
+
+                y += 10;
+
+                for (var a of arr.quiet) {
+
+                    if (!flowData[a[0]]) {
+
+                        var speakerEnglishY = canvasHeight / 2 + englishY[transcript.speakers[a[0]].english];
+                        var speakerGenderY = canvasHeight / 2 + genderY[transcript.speakers[a[0]].gender.toLowerCase()];
+
+                        flowData[a[0]] = [100, speakerEnglishY];
+                        flowBackData[a[0]] = [100, speakerEnglishY + 3];
+
+                        flowData[a[0]].push(200, speakerGenderY);
+                        flowBackData[a[0]].push(200, speakerGenderY + 3);
+
+                        flowData[a[0]].push(300, speakerlistTopY + 40 * transcript.speakers[a[0]].index);
+                        flowBackData[a[0]].push(300, speakerlistTopY + 40 * transcript.speakers[a[0]].index + 3);
+
+                        flowData[a[0]].push(400, (canvasHeight - 5 * transcript.speakers[a[0]].total) / 2 + 5 * transcript.speakers[a[0]].index);
+                        flowBackData[a[0]].push(400, (canvasHeight - 5 * transcript.speakers[a[0]].total) / 2 + 5 * transcript.speakers[a[0]].index + 3);
+                    }
+
+                    flowData[a[0]].push(x, y);
+                    y += 3;
+                    flowBackData[a[0]].push(x, y);
+
+                }
+
+            }
+
+            $(canvas).attr({
+                width: canvasWidth,
+                height: canvasHeight + (maxTopicLevel + 2) * 50
+            });
+
+            // console.log(flowData);
+            drawMarker(canvas, 400, markerTopY - 30, intervalMaxHeight + 30, markerWidth, transcript.endtime);
+
+        }
+
+        function drawTopic(canvas, topicLookup, topicTimeline) {
+
+            var ctx = canvas.getContext("2d");
+            ctx.globalCompositeOperation = "destination-over";
+            ctx.fillStyle = "#4d4d4d";
+
+
+            var xInitial = 400;
+            var yInitial = canvasHeight;
+            var widthSec = 1; //markerWidth 300 / 5 minutes
+
+            var topicRendered = {};
+
+            for (var b of topicTimeline) {
+
+                var start = b.start;
+                var end = b.end;
+
+                var topic = topicLookup[b.id];
+
+
+                while (topic != null) {
+                    if (topicRendered[topic.level]) {
+                        topicRendered[topic.level].push([{ "id": topic.id, "start": start, "end": end, "description": topic.description }]);
+                    } else {
+                        topicRendered[topic.level] = [{ "id": topic.id, "start": start, "end": end, "description": topic.description }];
+                    }
+
+                    topic = topicLookup[topic.parent];
+                }
+            }
+
+
+            var topicRenderedArray = Object.entries(topicRendered);
+
+            for (var ta of topicRenderedArray) {
+
+                var currentLevel = ta[0];
+                var currentTopics = ta[1];
+
+                currentTopics.sort(function (a, b) {
+                    return a.start - b.start;
+                });
+
+
+                var combined = [currentTopics[0]];
+
+                for (var x = 1; x < currentTopics.length; x++) {
+                    if (combined[combined.length - 1].id == currentTopics[x][0].id) {
+                        combined[combined.length - 1].end = currentTopics[x][0].end;
+                    } else {
+                        combined.push(currentTopics[x][0]);
+                    }
+                }
+
+                // console.log(combined);
+
+                for (var c of combined) {
+                    var x = xInitial + Number(c.start);
+                    var y = yInitial + 50 * currentLevel;
+                    var width = c.end - c.start;
+                    x = Math.ceil(x) + 3;
+                    width = Math.floor(width) - 3;
+                    var description = c.description;
+                    if (description.length > 30) {
+                        description = description.substring(0, 27) + "...";
+                    }
+
+                    ctx.fillRect(x, y, width, 5);
+                    printTopicDescription(canvas, x, y + 25, width - 10, description);
+                }
+
+            }
+
+        }
+
+        function printSpeaker(ctx, x, y, speakerName) {
+            ctx.fillText(speakerName, x, y);
+        }
+
+        function printTopicDescription(canvas, x, y, width, topicDescription) {
+
+            var maxWidth = width;
+            var lineHeight = 20;
+            var ctx = canvas.getContext("2d");
+            ctx.save();
+
+            // ctx.font = "20px RobotoRegular";
+            ctx.font = "15px RobotoRegular";
+            ctx.fillStyle = "#000";
+
+            topicDescription = capitalizeSentence(topicDescription);
+
+
+            var words = topicDescription.split(' ');
+            var line = '';
+
+            for (var n = 0; n < words.length; n++) {
+                var testLine = line + words[n] + ' ';
+                var metrics = ctx.measureText(testLine);
+                var testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    ctx.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                }
+                else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line, x, y);
+
+            ctx.restore();
+        }
+
+        function drawFlow(canvas, speakers) {
+
+            var ctx = canvas.getContext("2d");
+
+            for (var s of Object.entries(flowData)) {
+
+                var speakerColor = speakers[s[0]].color;
+                var speakerGender = speakers[s[0]].gender.toLowerCase();
+                var speakerEnglish = speakers[s[0]].english.toLowerCase();
+
+                if (highlightedSpeaker && highlightedSpeaker != s[0]) {
+                    speakerColor = inactiveColor[0];
+                }
+
+                if (highlightedGenderEnglish) {
+
+                    if (highlightedGenderEnglish == "female" || highlightedGenderEnglish == "male") {
+                        if (highlightedGenderEnglish != speakerGender) {
+                            speakerColor = inactiveColor[0];
+                        }
+                    }
+
+                    if (highlightedGenderEnglish == "native" || highlightedGenderEnglish == "non-native") {
+                        if (highlightedGenderEnglish != speakerEnglish) {
+                            speakerColor = inactiveColor[0];
+                        }
+                    }
+
+                }
+
+                var strongColor = false;
+
+                if (highlightedSpeaker && highlightedSpeaker == s[0]) {
+                    strongColor = true;
+                }
+
+                if (highlightedGenderEnglish) {
+
+                    if (highlightedGenderEnglish == "female" || highlightedGenderEnglish == "male") {
+                        if (highlightedGenderEnglish == speakerGender) {
+                            strongColor = true;
+                        }
+                    }
+
+                    if (highlightedGenderEnglish == "native" || highlightedGenderEnglish == "non-native") {
+                        if (highlightedGenderEnglish == speakerEnglish) {
+                            strongColor = true;
+                        }
+                    }
+
+                }
+
+                drawPoint(ctx, s[1][4], s[1][5], 5, speakerColor);
+                printSpeaker(ctx, s[1][4] - 15, s[1][5] - 10, s[0]);
+                drawSpline2(ctx, flowData[s[0]], flowBackData[s[0]], 0.5, speakerColor, strongColor);
+
+                if (showSteps) {
+                    for (var i = 0; i < flowData[s[0]].length; i += 2) {
+                        drawPoint(ctx, flowData[s[0]][i], flowData[s[0]][i + 1], 2, "#ff0000");
+                        drawPoint(ctx, flowBackData[s[0]][i], flowBackData[s[0]][i + 1], 2, "#0000ff");
+                    }
+                }
+
+            }
+
+        }
+
+        function drawValueGroup(canvas, speakers) {
+
+            var ctx = canvas.getContext("2d");
+
+            var genderMaleColor = inactiveColor[2];
+            var genderFemaleColor = inactiveColor[2];
+            var englishNativeColor = inactiveColor[2];
+            var englishNonnativeColor = inactiveColor[2];
+
+
+            if (highlightedGenderEnglish) {
+
+                if (highlightedGenderEnglish == "female") {
+                    genderFemaleColor = genderColor["female"];
+                }
+
+                if (highlightedGenderEnglish == "male") {
+                    genderMaleColor = genderColor["male"];
+                }
+
+                if (highlightedGenderEnglish == "native") {
+                    englishNativeColor = englishColor["native"];
+                }
+
+                if (highlightedGenderEnglish == "non-native") {
+                    englishNonnativeColor = englishColor["non-native"];
+                }
+
+            }
+
+            if (highlightedSpeaker) {
+                var highlightedSpeakerGender = speakers[highlightedSpeaker].gender.toLowerCase();
+                var highlightedSpeakerEnglish = speakers[highlightedSpeaker].english.toLowerCase();
+
+                // console.log(highlightedSpeaker+": "+highlightedSpeakerGender+", "+highlightedSpeakerEnglish);
+
+                if (highlightedSpeakerGender == "male") {
+                    genderMaleColor = genderColor["male"];
+                }
+
+                if (highlightedSpeakerGender == "female") {
+                    genderFemaleColor = genderColor["female"];
+                }
+
+                if (highlightedSpeakerEnglish == "native") {
+                    englishNativeColor = englishColor["native"];
+                }
+
+                if (highlightedSpeakerEnglish == "non-native") {
+                    englishNonnativeColor = englishColor["non-native"];
+                }
+
+            }
+
+            speakerStatsControls["female"] = [200, canvasHeight / 2 + genderY["female"], 5 + (speakerStats["female"])];
+            speakerStatsControls["male"] = [200, canvasHeight / 2 + genderY["male"], 5 + (speakerStats["male"])];
+            speakerStatsControls["native"] = [100, canvasHeight / 2 + englishY["native"], 5 + (speakerStats["native"])];
+            speakerStatsControls["non-native"] = [100, canvasHeight / 2 + englishY["non-native"], 5 + (speakerStats["non-native"])];
+
+            drawPoint(ctx, 200, canvasHeight / 2 + genderY["female"], 5 + (speakerStats["female"]), genderFemaleColor);
+            printText(ctx, 180, canvasHeight / 2 + genderY["female"] + 25 + speakerStats["female"], 40, "Female", 15);
+
+            drawPoint(ctx, 200, canvasHeight / 2 + genderY["male"], 5 + (speakerStats["male"]), genderMaleColor);
+            printText(ctx, 180, canvasHeight / 2 + genderY["male"] + 25 + speakerStats["male"], 40, "male", 15);
+
+            drawPoint(ctx, 100, canvasHeight / 2 + englishY["native"], 5 + (speakerStats["native"]), englishNativeColor);
+            printText(ctx, 80, canvasHeight / 2 + englishY["native"] + 25 + speakerStats["native"], 40, "native", 15);
+
+            drawPoint(ctx, 100, canvasHeight / 2 + englishY["non-native"], 5 + (speakerStats["non-native"]), englishNonnativeColor);
+            printText(ctx, 80, canvasHeight / 2 + englishY["non-native"] + 25 + speakerStats["non-native"], 40, "non-native", 15);
+
+        }
+
+
+        function drawMarker(canvas, x, y, height, width, endtime) {
+
+            var ctx = canvas.getContext("2d");
+            ctx.save();
+
+            ctx.globalCompositeOperation = "destination-over";
+            ctx.strokeStyle = "#999";
+            ctx.setLineDash([3, 3]);
+            ctx.font = "10px Arial";
+            ctx.fillStyle = "#000";
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "right";
+
+
+            var step = Math.ceil(endtime / 300);
+            for (var i = 0; i <= step; i++) {
+
+                ctx.beginPath();
+                // ctx.moveTo(x, y);
+                ctx.moveTo(x, y + height + 20);
+                ctx.lineTo(x, y + height + 30);
+                ctx.stroke();
+                ctx.fillText(5 * i, x + 5, y + height + 40);
+
+                x += width;
+            }
+
+
+
+            ctx.restore();
+
+        }
+
+        function getEndPosition(x, y, height, width) {
+
+            var newPos = {};
+            newPos.topX = x + width;
+            newPos.topY = y;
+            newPos.bottomX = x + width;
+            newPos.bottomY = y + height;
+
+            return newPos;
+
+        }
+
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+
+            do {
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+            }
+            while (safeColors.includes(color));
+
+            return color;
+        }
+
+        function getSafeColor(index) {
+
+            if (index > 11) {
+                // return "#000000";
+                return getRandomColor();
+            } else {
+                return safeColors[index];
+            }
+        }
+
+        function getCategoryColor(category, index) {
+            if (category > 1 || index > 8) {
+                // return "#000000";
+                return getRandomColor();
+            } else {
+                return categoryColors[category][index];
+            }
+        }
+
+
+
+    </script>
+    <style>
+        @font-face {
+            font-family: 'RobotoThin';
+            src: url('/style/Roboto/Roboto-Thin.ttf');
+        }
+
+        @font-face {
+            font-family: 'RobotoRegular';
+            src: url('/style/Roboto/Roboto-Regular.ttf');
+        }
+
+        body {
+            font-family: RobotoThin, Helvetica, sans-serif;
+        }
+
+        button {
+            font-family: RobotoRegular, Helvetica, sans-serif;
+        }
+        .word_interval.selected{
+            background-color: #376AAD;
+            color: #ffffff;
+        }
+        #canvas_container {
+            width: 100%;
+            overflow: scroll;
+            text-align: center;
+        }
+
+        #canvas_container canvas {
+            padding: 0px;
+            margin: 0px;
+            border-top: 1px solid #aaa;
+            border-bottom: 1px solid #aaa;
+        }
+
+        .meeting_discription {
+            width: 100%;
+            margin: 50px 5px 10px;
+        }
+
+        .speaker_row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .speaker_container {
+            float: left;
+            padding: 5px 10px;
+            margin: 5px 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- <p><a href="index.html">Meeting List</a></p> -->
+    <p>
+        Show visualization based on step of
+        <button onclick="reload(10)" data-value="10" class="word_interval">10 seconds</button>
+        <button onclick="reload(30)" data-value="30" class="word_interval">30 seconds</button>
+        <button onclick="reload(60)" data-value="60" class="word_interval">60 seconds</button>
+        <button onclick="reload(150)" data-value="150" class="word_interval">150 seconds</button>
+        <button onclick="reload(300)" data-value="300" class="word_interval">300 seconds</button>
+        <input id="ckShowstep" type="checkbox"><label for="ckShowstep">Show Step Data</label>
+
+    </p>
+    <div id="meetinginfo_container"></div>
+    <div id="canvas_container"></div>
+</body>
+
+</html>
