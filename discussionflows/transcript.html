@@ -77,11 +77,10 @@
 
             var canvas = document.getElementById(canvasID);
 
-
             $("#" + infoID).html("<b>File Name:</b> " + fileName.replace(".json", "")
                 + "; <b>Meeting Duration:</b> " + duration + " Minutes"
                 + "; <b>Participant Count:</b> " + participants.length
-                + "; <b>Topic Count:</b> " + allTopics.length
+                + "; <b>Topic Count:</b> " + topicList.length
                 + "; <a href=\"topics.html?file=" + fileName + "&theme=education\">Topics</a>"
                 + "; <a href=\"words.html?file=" + fileName + "&theme=education\">Words</a>"
                 + "<br/>");

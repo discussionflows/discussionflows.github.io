@@ -19,16 +19,6 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
 
-        const safeColors = ["#8dd3c7", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9", "#bc80bd", "#ccebc5", "#ffed6f", "#ffffb3"];
-
-        // const safeColors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"];
-        //    const mColors = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58'];
-        //    const fColors = ['#fff7f3','#fde0dd','#fcc5c0','#fa9fb5','#f768a1','#dd3497','#ae017e','#7a0177','#49006a'];
-        const categoryColors = [
-            ['#ffffd9', '#edf8b1', '#c7e9b4', '#7fcdbb', '#41b6c4', '#1d91c0', '#225ea8', '#253494', '#081d58'].reverse(),
-            ['#fff7f3', '#fde0dd', '#fcc5c0', '#fa9fb5', '#f768a1', '#dd3497', '#ae017e', '#7a0177', '#49006a'].reverse()
-        ];
-
         const intervalSizes = [10, 30, 60, 150, 300];
         const englishY = { "native": -100, "non-native": 100 };
         const genderY = { "female": -100, "unknown": 0, "male": 100 };
@@ -36,7 +26,6 @@
         var canvasWidth = window.innerWidth - 40;
         var canvasHeight = window.innerHeight - 300;
         var folder = "output";
-        var sankeyData;
         var flowData;
         var flowBackData;
         var maxTopicLevel = 0;
@@ -165,12 +154,10 @@
 
             if (!highlightedSpeaker) {
                 highlightedSpeaker = speakername;
-                // console.log("highlight " + speakername);
                 reload(intervalSize);
             }else{
                 if(highlightedSpeaker != speakername){
                     highlightedSpeaker = speakername;
-                    // console.log("highlight " + speakername);
                     reload(intervalSize);
                 }else{
                     highlightedSpeaker = "";
@@ -213,7 +200,6 @@
             }).appendTo('#canvas_container');
 
 
-            // console.log(folder+"/"+fileName);
             var infoID = "info_" + (fileName.replace(".json", ""));
             var canvasID = "canvas_" + (fileName.replace(".json", ""));
 
@@ -253,7 +239,6 @@
                 participants[i].category = participants[i].gender == "Male" ? 0 : 1;
                 participants[i].education = allSpeakers[participants[i].name].education;
                 participants[i].english = allSpeakers[participants[i].name].english;
-                // participants[i].color = getSafeColor(i);
                 participants[i].color = colorAssignment[participants[i].name];
                 speakerStats[participants[i].gender.toLowerCase()] += 1;
                 speakerStats[participants[i].english] += 1;
@@ -271,7 +256,7 @@
 
             drawFlow(canvas, speakers);
 
-            drawValueGroup(canvas, speakers);
+            drawAttributes(canvas, speakers);
 
             drawTopic(canvas, transcript.topicList, topicTimeline);
 
@@ -286,7 +271,6 @@
 
             for (var i = 0; i < step; i++) {
                 var words = transcript.getWordsByTime(transcript.allWords, i * intervalSize, intervalSize * (i + 1));
-                // console.log(i*intervalSize/60+": "+words.length);
 
                 maxWords = Math.max(maxWords, words.length);
 
@@ -322,13 +306,8 @@
                 }
 
                 intervalSet.push({ "length": words.length, "active": statsActive, "quiet": statsQuiet });
-                // console.log(wordsBySpeakerArray);
-                // console.log(activeSpeakers);
-                // console.log(quietSpeakers);
             }
 
-            // console.log(intervalSet);
-            // console.log(maxWords);
 
             var intervalMaxHeight = 300;
             var ratioV = intervalMaxHeight / maxWords;
@@ -339,9 +318,6 @@
             var speakerlistTopY = (canvasHeight - transcript.participants.length * 40) / 2;
             var markerTopY = (canvasHeight - intervalMaxHeight) / 2;
             var markerBottomY = markerTopY + intervalMaxHeight;
-
-
-
 
 
             flowData = {};
@@ -359,9 +335,7 @@
                     if (!flowData[a[0]]) {
 
                         var speakerEnglishY = canvasHeight / 2 + englishY[transcript.speakers[a[0]].english];
-                        // console.log(speaker+" - "+speakers[speaker].english+": "+speakerEnglishY);
                         var speakerGenderY = canvasHeight / 2 + genderY[transcript.speakers[a[0]].gender.toLowerCase()];
-                        // console.log(speaker+" - "+speakers[speaker].gender+": "+speakerGenderY);
 
                         flowData[a[0]] = [100, speakerEnglishY];
                         flowBackData[a[0]] = [100, speakerEnglishY + 3];
@@ -419,7 +393,6 @@
                 height: canvasHeight + (maxTopicLevel + 2) * 50
             });
 
-            // console.log(flowData);
             drawMarker(canvas, 400, markerTopY - 30, intervalMaxHeight + 30, markerWidth, transcript.endtime);
 
         }
@@ -479,7 +452,6 @@
                     }
                 }
 
-                // console.log(combined);
 
                 for (var c of combined) {
                     var x = xInitial + Number(c.start);
@@ -606,7 +578,7 @@
 
         }
 
-        function drawValueGroup(canvas, speakers) {
+        function drawAttributes(canvas, speakers) {
 
             var ctx = canvas.getContext("2d");
 
@@ -640,7 +612,6 @@
                 var highlightedSpeakerGender = speakers[highlightedSpeaker].gender.toLowerCase();
                 var highlightedSpeakerEnglish = speakers[highlightedSpeaker].english.toLowerCase();
 
-                // console.log(highlightedSpeaker+": "+highlightedSpeakerGender+", "+highlightedSpeakerEnglish);
 
                 if (highlightedSpeakerGender == "male") {
                     genderMaleColor = genderColor["male"];
@@ -698,7 +669,6 @@
             for (var i = 0; i <= step; i++) {
 
                 ctx.beginPath();
-                // ctx.moveTo(x, y);
                 ctx.moveTo(x, y + height + 20);
                 ctx.lineTo(x, y + height + 30);
                 ctx.stroke();
@@ -713,64 +683,18 @@
 
         }
 
-        function getEndPosition(x, y, height, width) {
-
-            var newPos = {};
-            newPos.topX = x + width;
-            newPos.topY = y;
-            newPos.bottomX = x + width;
-            newPos.bottomY = y + height;
-
-            return newPos;
-
-        }
-
-
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-
-            do {
-                for (var i = 0; i < 6; i++) {
-                    color += letters[Math.floor(Math.random() * 16)];
-                }
-            }
-            while (safeColors.includes(color));
-
-            return color;
-        }
-
-        function getSafeColor(index) {
-
-            if (index > 11) {
-                // return "#000000";
-                return getRandomColor();
-            } else {
-                return safeColors[index];
-            }
-        }
-
-        function getCategoryColor(category, index) {
-            if (category > 1 || index > 8) {
-                // return "#000000";
-                return getRandomColor();
-            } else {
-                return categoryColors[category][index];
-            }
-        }
-
 
 
     </script>
     <style>
         @font-face {
             font-family: 'RobotoThin';
-            src: url('/style/Roboto/Roboto-Thin.ttf');
+            src: url('style/Roboto/Roboto-Thin.ttf');
         }
 
         @font-face {
             font-family: 'RobotoRegular';
-            src: url('/style/Roboto/Roboto-Regular.ttf');
+            src: url('style/Roboto/Roboto-Regular.ttf');
         }
 
         body {

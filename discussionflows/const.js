@@ -169,7 +169,6 @@ function assignColors(speakers, colorTheme) {
     return colorAssignment;
 }
 
-
 //https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
 function editColor(p, c0, c1, l) {
     let r, g, b, P, f, t, h, i = parseInt, m = Math.round, a = typeof (c1) == "string";
