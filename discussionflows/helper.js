@@ -8,24 +8,9 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
-function isContained(x0, y0, x1, y1, d){
+function isContained(x0, y0, x1, y1, d) {
     // console.log(x0+", "+y0+", "+x1+", "+y1);
-    return Math.sqrt((x0-x1)*(x0-x1)+(y0-y1)*(y0-y1))<(d+5);
-}
-
-function median(values) {
-    if (values.length === 0) return 0;
-
-    values.sort(function (a, b) {
-        return a - b;
-    });
-
-    var half = Math.floor(values.length / 2);
-
-    if (values.length % 2)
-        return values[half];
-
-    return (values[half - 1] + values[half]) / 2.0;
+    return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1)) < (d + 5);
 }
 
 function drawPoint(ctx, x, y, r, color) {
@@ -46,7 +31,7 @@ function printText(ctx, x, y, width, text, size) {
     ctx.save();
 
     // ctx.font = "20px RobotoRegular";
-    ctx.font = size+"px RobotoRegular";
+    ctx.font = size + "px RobotoRegular";
     ctx.fillStyle = "#000";
 
     text = capitalizeSentence(text);
@@ -97,77 +82,6 @@ function getControlPoints(x0, y0, x1, y1, x2, y2, t) {
     return [x1 + fa * (x0 - x2), y1, x1 - fa * (x0 - x2), y1];
 }
 
-function drawSpline(ctx, pts, ptsR, t, flowColor) {
-
-    ctx.save();
-
-    ctx.setLineDash([5, 5]);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = pSBC(-0.4, flowColor, false, true);
-    ctx.fillStyle = flowColor;
-    ctx.globalAlpha = 0.8;
-
-
-    var cp = [];   // array of control points, as x0,y0,x1,y1,...
-    var n = pts.length;
-    var cpR = [];   // array of control points, as x0,y0,x1,y1,...
-    var nR = ptsR.length;
-
-    if (n < 5) {
-        ctx.beginPath();
-        ctx.moveTo(pts[0], pts[1]);
-        ctx.quadraticCurveTo(pts[0] + (pts[2] - pts[0]) / 2, pts[1] + 0.2 * (pts[3] - pts[1]) / 2, pts[2], pts[3]);
-        ctx.quadraticCurveTo(pts[2], pts[3], ptsR[2], ptsR[3]);
-        ctx.quadraticCurveTo(ptsR[0] + (ptsR[2] - ptsR[0]) / 2, ptsR[1] + 0.2 * (ptsR[3] - ptsR[1]) / 2, ptsR[0], ptsR[1]);
-        ctx.fill();
-
-        ctx.closePath();
-
-    } else {
-
-        for (var i = 0; i < n - 5; i += 2) {
-            cp = cp.concat(getControlPoints(pts[i], pts[i + 1], pts[i + 2], pts[i + 3], pts[i + 4], pts[i + 5], t));
-        }
-
-        for (var i = 0; i < nR - 5; i += 2) {
-            cpR = cpR.concat(getControlPoints(ptsR[i], ptsR[i + 1], ptsR[i + 2], ptsR[i + 3], ptsR[i + 4], ptsR[i + 5], t));
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(pts[0], pts[1]);
-        ctx.quadraticCurveTo(cp[0], cp[1], pts[2], pts[3]);
-        ctx.quadraticCurveTo(pts[2], pts[3], ptsR[2], ptsR[3]);
-        ctx.quadraticCurveTo(cpR[0], cpR[1], ptsR[0], ptsR[1]);
-        ctx.fill();
-        ctx.closePath();
-
-
-        for (var i = 2; i < n - 4; i += 2) {
-            ctx.beginPath();
-            ctx.moveTo(pts[i], pts[i + 1]);
-            ctx.bezierCurveTo(cp[2 * i - 2], cp[2 * i - 1], cp[2 * i], cp[2 * i + 1], pts[i + 2], pts[i + 3]);
-            ctx.quadraticCurveTo(pts[i + 2], pts[i + 3], ptsR[i + 2], ptsR[i + 3]);
-            ctx.bezierCurveTo(cpR[2 * i], cpR[2 * i + 1], cpR[2 * i - 2], cpR[2 * i - 1], ptsR[i], ptsR[i + 1]);
-            ctx.fill();
-            // ctx.stroke();
-            ctx.closePath();
-        }
-
-
-        ctx.beginPath();
-        ctx.moveTo(pts[n - 4], pts[n - 3]);
-        ctx.quadraticCurveTo(cp[2 * n - 10], cp[2 * n - 9], pts[n - 2], pts[n - 1]);
-        ctx.quadraticCurveTo(pts[n - 2], pts[n - 1], ptsR[n - 2], ptsR[n - 1]);
-        ctx.quadraticCurveTo(cpR[2 * n - 10], cpR[2 * n - 9], ptsR[n - 4], ptsR[n - 3]);
-        ctx.fill();
-        ctx.closePath();
-    }
-
-    ctx.restore();
-
-
-}
-
 function drawSpline2(ctx, pts, ptsR, t, flowColor, strongColor) {
 
     ctx.save();
@@ -208,10 +122,6 @@ function drawSpline2(ctx, pts, ptsR, t, flowColor, strongColor) {
             cp = cp.concat(getControlPoints(pts[i], pts[i + 1], pts[i + 2], pts[i + 3], pts[i + 4], pts[i + 5], t));
         }
 
-        // for (var i = 0; i < cp.length; i += 2) {
-        //     drawPoint(ctx, cp[i], cp[i + 1], 2, "#00ff00");
-        // }
-
         for (var i = 0; i < nR - 5; i += 2) {
             cpR = cpR.concat(getControlPoints(ptsR[i], ptsR[i + 1], ptsR[i + 2], ptsR[i + 3], ptsR[i + 4], ptsR[i + 5], t));
         }
@@ -221,8 +131,6 @@ function drawSpline2(ctx, pts, ptsR, t, flowColor, strongColor) {
         ctx.quadraticCurveTo(cp[0], cp[1], pts[2], pts[3]);
         ctx.quadraticCurveTo(pts[2], pts[3], ptsR[2], ptsR[3]);
         ctx.quadraticCurveTo(cpR[0], cpR[1], ptsR[0], ptsR[1]);
-        // ctx.lineTo(pts[2], pts[3]);
-        // ctx.stroke();
         ctx.fill();
         ctx.closePath();
 
@@ -234,7 +142,6 @@ function drawSpline2(ctx, pts, ptsR, t, flowColor, strongColor) {
             ctx.quadraticCurveTo(pts[i + 2], pts[i + 3], ptsR[i + 2], ptsR[i + 3]);
             ctx.bezierCurveTo(cpR[2 * i], cpR[2 * i + 1], cpR[2 * i - 2], cpR[2 * i - 1], ptsR[i], ptsR[i + 1]);
             ctx.fill();
-            // ctx.stroke();
             ctx.closePath();
         }
 
@@ -255,10 +162,6 @@ function drawSpline2(ctx, pts, ptsR, t, flowColor, strongColor) {
 
 function drawSpline3(ctx, pts, ptsR, t, flowColor, drawEdge, strongColor) {
 
-    // for (var i = 0; i < pts.length; i += 3) {
-    //     console.log(pts[i + 2]);
-    // }
-    
     var strokeColor = pSBC(-0.3, flowColor, false, true);
 
     ctx.save();
@@ -274,23 +177,16 @@ function drawSpline3(ctx, pts, ptsR, t, flowColor, drawEdge, strongColor) {
         ctx.globalCompositeOperation = "destination-over";
     }
 
-
-
     var cp = [];   // array of control points, as x0,y0,x1,y1,...
     var n = pts.length;
     var cpR = [];   // array of control points, as x0,y0,x1,y1,...
     var nR = ptsR.length;
     var lines = [];
 
-
     if (n < 7) {
         ctx.beginPath();
         ctx.moveTo(pts[0], pts[1]);
         ctx.quadraticCurveTo(pts[0] + (pts[3] - pts[0]) / 2, pts[1] + 0.2 * (pts[4] - pts[1]) / 2, pts[3], pts[4]);
-        // if(drawEdge){
-        //     ctx.setLineDash([]);
-        //     ctx.stroke();
-        // }
         ctx.quadraticCurveTo(pts[3], pts[4], ptsR[3], ptsR[4]);
         ctx.quadraticCurveTo(ptsR[0] + (ptsR[3] - ptsR[0]) / 2, ptsR[4] + 0.2 * (ptsR[4] - ptsR[1]) / 2, ptsR[0], ptsR[1]);
         ctx.fill();
@@ -298,15 +194,6 @@ function drawSpline3(ctx, pts, ptsR, t, flowColor, drawEdge, strongColor) {
         ctx.closePath();
 
     } else {
-
-        // var ptsUpdated = insertMidPoints(pts, t);
-        // var ptsRUpdated = insertMidPoints(ptsR, t);
-        // for(var i=0; i<ptsUpdated.length; i+=3){
-        //     drawPoint(ctx, ptsUpdated[i], ptsUpdated[i+1], 5, "#0000ff");
-        //     // console.log(ptsUpdated[i]+", "+ptsUpdated[i+1]+" - "+ptsUpdated[i+2]);
-
-        //     // drawPoint(ctx, ptsRUpdated[i], ptsRUpdated[i+1], 5, "#ff0000");
-        // }
 
         for (var i = 0; i < n - 8; i += 3) {
             cp = cp.concat(getControlPoints(pts[i], pts[i + 1], pts[i + 3], pts[i + 4], pts[i + 6], pts[i + 7], t));
@@ -316,164 +203,107 @@ function drawSpline3(ctx, pts, ptsR, t, flowColor, drawEdge, strongColor) {
             cpR = cpR.concat(getControlPoints(ptsR[i], ptsR[i + 1], ptsR[i + 3], ptsR[i + 4], ptsR[i + 6], ptsR[i + 7], t));
         }
 
-        // for (var i = 0; i < cp.length; i += 2) {
-        //     drawPoint(ctx, cp[i], cp[i + 1], 5, "#00ff00");
-        //     // console.log(i+" - "+cp[i]+","+cp[i+1]);
-        // }
-
-
         var currentGlobalCompositeOperation = ctx.globalCompositeOperation;
         ctx.globalCompositeOperation = "destination-over";
 
         ctx.beginPath();
         ctx.moveTo(pts[0], pts[1]);
         ctx.quadraticCurveTo(cp[0], cp[1], pts[3], pts[4]);
-        // if(drawEdge){
-        //     ctx.setLineDash([]);
-        //     ctx.stroke();
-        // }
         ctx.quadraticCurveTo(pts[3], pts[4], ptsR[3], ptsR[4]);
         ctx.quadraticCurveTo(cpR[0], cpR[1], ptsR[0], ptsR[1]);
         ctx.fill();
         ctx.closePath();
 
         var size = n / 3;
-        // console.log(size);
         for (var i = 1; i < size - 2; i++) {
-            if(i>2){
+            if (i > 2) {
                 ctx.globalCompositeOperation = currentGlobalCompositeOperation;
             }
             ctx.beginPath();
             ctx.moveTo(pts[i * 3], pts[i * 3 + 1]);
 
-            // ctx.lineTo(pts[i*3+3], pts[i*3+4]);
-            // ctx.lineTo(ptsR[i*3+3], ptsR[i*3+4]);
-            // ctx.lineTo(ptsR[i*3], ptsR[i*3+1]);
-
             ctx.bezierCurveTo(cp[i * 4 - 2], cp[i * 4 - 1], cp[i * 4], cp[i * 4 + 1], pts[i * 3 + 3], pts[i * 3 + 4]);
-            
+
             if (drawEdge) {
-                // if(i%2==0){
-                //     if(pts[i*3+2]==0){
-                //         ctx.setLineDash([]);
-                //     }else{
-                //         ctx.setLineDash([pts[i*3+2],5]);
-                //     }
-                // }else{
-                //     if(pts[i*3+5]==0){
-                //         ctx.setLineDash([]);
-                //     }else{
-                //         ctx.setLineDash([pts[i*3+5],5]);
-                //     }
-                // }
-
-                // if (pts[i * 3 + 5] < 5) {
-                //     ctx.setLineDash([]);
-                // } else if (pts[i * 3 + 5] < 20) {
-                //     ctx.setLineDash([15, 10]);
-                // } else {
-                //     ctx.setLineDash([5, 5]);
-                // }
-
-                // ctx.stroke();
-
                 lines.push([pts[i * 3], pts[i * 3 + 1], cp[i * 4 - 2], cp[i * 4 - 1], cp[i * 4], cp[i * 4 + 1], pts[i * 3 + 3], pts[i * 3 + 4], pts[i * 3 + 5]]);
-                
-
             }
-
-
 
             ctx.quadraticCurveTo(pts[i * 3 + 3], pts[i * 3 + 4], ptsR[i * 3 + 3], ptsR[i * 3 + 4]);
             ctx.bezierCurveTo(cpR[i * 4], cpR[i * 4 + 1], cpR[i * 4 - 2], cpR[i * 4 - 1], ptsR[i * 3], ptsR[i * 3 + 1]);
             ctx.fill();
 
-            // ctx.stroke();
             ctx.closePath();
 
         }
 
-
         ctx.beginPath();
         ctx.moveTo(pts[n - 6], pts[n - 5]);
 
-        // ctx.lineTo(pts[n - 3], pts[n - 2]);
-        // ctx.lineTo(ptsR[n - 3], ptsR[n - 2]);
-        // ctx.lineTo(ptsR[n - 6], ptsR[n - 5]);
-
         ctx.quadraticCurveTo(cp[cp.length - 2], cp[cp.length - 1], pts[n - 3], pts[n - 2]);
-        lines.push([pts[n - 6], pts[n - 5], cp[cp.length - 2], cp[cp.length - 1], pts[n - 3], pts[n - 2], pts[n-1]]);
+        lines.push([pts[n - 6], pts[n - 5], cp[cp.length - 2], cp[cp.length - 1], pts[n - 3], pts[n - 2], pts[n - 1]]);
 
-        // if(drawEdge){
-        //     // ctx.setLineDash([pts[n-4],5]);
-        //     ctx.setLineDash([]);
-        //     ctx.stroke();
-        // }
         ctx.quadraticCurveTo(pts[n - 3], pts[n - 2], ptsR[n - 3], ptsR[n - 2]);
         ctx.quadraticCurveTo(cpR[cp.length - 2], cpR[cp.length - 1], ptsR[n - 6], ptsR[n - 5]);
         ctx.fill();
 
-        // ctx.stroke();
         ctx.closePath();
     }
 
     ctx.restore();
 
+    for (var i = 0; i < lines.length; i++) {
 
-    for(var i=0; i<lines.length; i++){
-        
-        if(i>0){
-            drawLine(ctx, lines[i], 0, 0.5, strokeColor, lines[i-1][8]);
+        if (i > 0) {
+            drawLine(ctx, lines[i], 0, 0.5, strokeColor, lines[i - 1][8]);
         }
         drawLine(ctx, lines[i], 0.5, 1, strokeColor, lines[i][8]);
     }
-    
 
 }
 
-function drawLine(ctx, pts, start, end, strokeColor, density){
+function drawLine(ctx, pts, start, end, strokeColor, density) {
 
-    if(density > 0){
-        
+    if (density > 0) {
+
         var step = 0.01;
-        var increment = (end-start)/step; //50
+        var increment = (end - start) / step; //50
 
-        if(density>50){
+        if (density > 50) {
             increment = 2;
-        }else if(density>20){
+        } else if (density > 20) {
             increment = 5;
         }
 
         var lines = [];
 
-        for(var t=start; t<=end; t+=step){
+        for (var t = start; t <= end; t += step) {
 
-            if(pts.length == 9){
+            if (pts.length == 9) {
                 var x = (1 - t) * (1 - t) * (1 - t) * pts[0] + 3 * (1 - t) * (1 - t) * t * pts[2] + 3 * (1 - t) * t * t * pts[4] + t * t * t * pts[6];
                 var y = (1 - t) * (1 - t) * (1 - t) * pts[1] + 3 * (1 - t) * (1 - t) * t * pts[3] + 3 * (1 - t) * t * t * pts[5] + t * t * t * pts[7];
-            
+
                 lines.push([x, y]);
             }
 
-            if(pts.length == 7){
-            
+            if (pts.length == 7) {
+
                 x = (1 - t) * (1 - t) * pts[0] + 2 * (1 - t) * t * pts[2] + t * t * pts[4];
                 y = (1 - t) * (1 - t) * pts[1] + 2 * (1 - t) * t * pts[3] + t * t * pts[5];
 
                 lines.push([x, y]);
             }
         }
-        
-        ctx.save();    
+
+        ctx.save();
         ctx.globalCompositeOperation = "destination-over";
         ctx.strokeStyle = strokeColor;
         ctx.lineWidth = 2;
 
-        for(var i=1; i<lines.length; i++){
-            
-            if(i%increment!=0){
+        for (var i = 1; i < lines.length; i++) {
+
+            if (i % increment != 0) {
                 ctx.beginPath();
-                ctx.moveTo(lines[i-1][0], lines[i-1][1]);
+                ctx.moveTo(lines[i - 1][0], lines[i - 1][1]);
                 ctx.lineTo(lines[i][0], lines[i][1]);
                 ctx.stroke();
             }
@@ -481,148 +311,9 @@ function drawLine(ctx, pts, start, end, strokeColor, density){
 
         ctx.restore();
     }
-    
-}
-
-function insertMidPoints(pts, t) {
-    
-    var ptsUpdated = [pts[0], pts[1], pts[2], pts[3], pts[4], pts[5]];
-    
-    var n = pts.length;
-    var cp = [];
-    for (var i = 0; i < n - 8; i += 3) {
-        cp = cp.concat(getControlPoints(pts[i], pts[i + 1], pts[i + 3], pts[i + 4], pts[i + 6], pts[i + 7], t));
-    }
-
-    var size = n / 3;
-    for (var i = 1; i < size - 2; i++) {
-        var midPoint = getMidpoint([pts[i * 3], pts[i * 3 + 1], cp[i * 4 - 2], cp[i * 4 - 1], cp[i * 4], cp[i * 4 + 1], pts[i * 3 + 3], pts[i * 3 + 4]]);
-        ptsUpdated.push(midPoint[0], midPoint[1], -1, pts[i * 3 + 3], pts[i * 3 + 4], pts[i * 3 + 5]);
-
-    }
-
-    ptsUpdated.push(pts[n-3], pts[n-2], pts[n-1]);
-
-    return ptsUpdated;
-}
-
-function drawFlow(ctx, pts, ptsR, cp, cpR) {
 
 }
 
-function drawPoints(ctx, pts) {
-
-    for (var p of pts) {
-        drawPoint(ctx, p[0], p[1], 2, "#0000ff");
-        drawPoint(ctx, p[2], p[3], 5, "#0000ff");
-    }
-}
-
-function DrawMidpoint(ctx, pts) {
-    var t = 0.5;
-    var x = (1 - t) * (1 - t) * (1 - t) * pts[0] + 3 * (1 - t) * (1 - t) * t * pts[2] + 3 * (1 - t) * t * t * pts[4] + t * t * t * pts[6];
-    var y = (1 - t) * (1 - t) * (1 - t) * pts[1] + 3 * (1 - t) * (1 - t) * t * pts[3] + 3 * (1 - t) * t * t * pts[5] + t * t * t * pts[7];
-
-    // ctx.save();
-    // // ctx.setLineDash([5,5]);
-    // ctx.strokeStyle = "#0000ff";
-    // ctx.moveTo(x, y);
-    // // ctx.bezierCurveTo(pts[2], pts[3], pts[4], pts[5], pts[6], pts[7]);
-    // ctx.lineTo(pts[6], pts[7]);
-    // ctx.stroke();
-    // ctx.restore();
-
-    drawPoint(ctx, x, y, 5, "#0000ff");
-    // drawPoint(ctx, pts[2], pts[3], 5, "#ff0000");
-    // drawPoint(ctx, pts[4], pts[5], 5, "#ff0000");
-    // drawPoint(ctx, pts[6], pts[7], 5, "#0000ff");
-}
-
-function getMidpoint(pts) {
-    var t = 0.5;
-    var x = (1 - t) * (1 - t) * (1 - t) * pts[0] + 3 * (1 - t) * (1 - t) * t * pts[2] + 3 * (1 - t) * t * t * pts[4] + t * t * t * pts[6];
-    var y = (1 - t) * (1 - t) * (1 - t) * pts[1] + 3 * (1 - t) * (1 - t) * t * pts[3] + 3 * (1 - t) * t * t * pts[5] + t * t * t * pts[7];
-
-    return [x, y];
-}
-
-function drawSplineSkipGap(ctx, pts, ptsR, t, flowColor) {
-
-    ctx.save();
-
-    ctx.lineWidth = 1;
-    ctx.fillStyle = flowColor;
-    ctx.globalAlpha = 0.5;
-
-
-    var cp = [];   // array of control points, as x0,y0,x1,y1,...
-    var n = pts.length;
-    var cpR = [];   // array of control points, as x0,y0,x1,y1,...
-    var nR = ptsR.length;
-
-    if (n < 5) {
-        ctx.beginPath();
-        ctx.moveTo(pts[0], pts[1]);
-        ctx.quadraticCurveTo(pts[0] + (pts[2] - pts[0]) / 2, pts[1] + 0.2 * (pts[3] - pts[1]) / 2, pts[2], pts[3]);
-        ctx.quadraticCurveTo(pts[2], pts[3], ptsR[2], ptsR[3]);
-        ctx.quadraticCurveTo(ptsR[0] + (ptsR[2] - ptsR[0]) / 2, ptsR[1] + 0.2 * (ptsR[3] - ptsR[1]) / 2, ptsR[0], ptsR[1]);
-        ctx.fill();
-        ctx.closePath();
-
-    } else {
-
-
-        for (var i = 0; i < n - 5; i += 2) {
-            cp = cp.concat(getControlPoints(pts[i], pts[i + 1], pts[i + 2], pts[i + 3], pts[i + 4], pts[i + 5], t));
-        }
-
-        for (var i = 0; i < nR - 5; i += 2) {
-            cpR = cpR.concat(getControlPoints(ptsR[i], ptsR[i + 1], ptsR[i + 2], ptsR[i + 3], ptsR[i + 4], ptsR[i + 5], t));
-        }
-
-        if (ptsR[3] - pts[3] != 3) {
-            ctx.beginPath();
-            ctx.moveTo(pts[0], pts[1]);
-            ctx.quadraticCurveTo(cp[0], cp[1], pts[2], pts[3]);
-            ctx.quadraticCurveTo(pts[2], pts[3], ptsR[2], ptsR[3]);
-            ctx.quadraticCurveTo(cpR[0], cpR[1], ptsR[0], ptsR[1]);
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        for (var i = 2; i < n - 4; i += 2) {
-
-            if (ptsR[i + 3] - pts[i + 3] != 3) {
-                ctx.beginPath();
-                ctx.moveTo(pts[i], pts[i + 1]);
-                ctx.bezierCurveTo(cp[2 * i - 2], cp[2 * i - 1], cp[2 * i], cp[2 * i + 1], pts[i + 2], pts[i + 3]);
-                ctx.quadraticCurveTo(pts[i + 2], pts[i + 3], ptsR[i + 2], ptsR[i + 3]);
-                ctx.bezierCurveTo(cpR[2 * i], cpR[2 * i + 1], cpR[2 * i - 2], cpR[2 * i - 1], ptsR[i], ptsR[i + 1]);
-                ctx.fill();
-                ctx.closePath();
-            }
-        }
-
-        if (ptsR[n - 1] - pts[n - 1] != 3) {
-
-            ctx.beginPath();
-            ctx.moveTo(pts[n - 4], pts[n - 3]);
-            ctx.quadraticCurveTo(cp[2 * n - 10], cp[2 * n - 9], pts[n - 2], pts[n - 1]);
-            ctx.quadraticCurveTo(pts[n - 2], pts[n - 1], ptsR[n - 2], ptsR[n - 1]);
-            ctx.quadraticCurveTo(cpR[2 * n - 10], cpR[2 * n - 9], ptsR[n - 4], ptsR[n - 3]);
-            ctx.fill();
-            ctx.closePath();
-        }
-    }
-
-    ctx.restore();
-
-
-}
-
-function adjustColor(color, amount) {
-    return '#' + color.replace(/^#/, '').replace(/../g, color => ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
-}
 
 const pSBC = (p, c0, c1, l) => {
     let r, g, b, P, f, t, h, i = parseInt, m = Math.round, a = typeof (c1) == "string";
@@ -650,16 +341,16 @@ const pSBC = (p, c0, c1, l) => {
     else return "#" + (4294967296 + r * 16777216 + g * 65536 + b * 256 + (f ? m(a * 255) : 0)).toString(16).slice(1, f ? undefined : -2)
 }
 
-function capitalizeSentence(s){
+function capitalizeSentence(s) {
     var words = s.split(" ");
     var updated = "";
-    for(var w of words){
-        updated+= " "+capitalizeWord(w);
+    for (var w of words) {
+        updated += " " + capitalizeWord(w);
     }
     return updated.substring(1);
 }
 
-function capitalizeWord(s){
+function capitalizeWord(s) {
     if (typeof s !== 'string') return ''
     return s.charAt(0).toUpperCase() + s.slice(1)
-  }
+}
